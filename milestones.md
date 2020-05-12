@@ -4,9 +4,11 @@
 - Tim Van:
 - Linyi Li:
 - Linda Li:
+  - Research and Decide Upon a Server Frame work
+  - Research on Flask integration with our ML model
 - Huyen Pham:
-  + Researching about React Native and ways to coporate with server side using Python Flask
-  + Get started with starter codes (ML server side) and structures.
+  + Researching about React Native and ways to corporate with server side using Python Flask
+  + Get started with starter codes (ML Model) and structures.
 
 ### What you plan to do this week 
 - Tim Van:
