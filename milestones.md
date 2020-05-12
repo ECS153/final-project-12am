@@ -22,3 +22,8 @@
 
 ## Design Doc: 
 `https://docs.google.com/document/d/1cZYCcZ2tTiPAkQ8KiDEkJrIE3gp-a65GKt6Xdzsf2cI/edit?usp=sharing`
+
+## Update Video: 
+`https://drive.google.com/drive/folders/1QlPPQJk_-GDOLTG57H_NnjUCIWEaHrs-?usp=sharing`
+
+
