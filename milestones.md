@@ -2,7 +2,9 @@
 ## Weekly report
 ### What you did last week 
 - Tim Van:
-  +
+  + Made the proposal.
+  + Imported and fixed liveness detection starter code.
+  + Researching Keras to take in a video clip server side.
 - Linyi Li:
   + Research on the deployment platform of our ML model
 - Linda Li:
@@ -13,7 +15,7 @@
   + Get started with starter codes (ML Model) and structures.
 
 ### What you plan to do this week (Action Item)
-- Tim Van:
+- Tim Van: prep ML models for flask integration (currently models are used with demo code).
 - Linyi Li: start working the deployment 
 - Linda Li:
 - Huyen Pham: started on React Native front end code
