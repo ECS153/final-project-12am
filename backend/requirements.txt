@@ -1,1 +1,8 @@
 imutils
+numpy
+wheel
+matplotlib
+sklearn
+opencv-python
+tensorflow
+Keras
