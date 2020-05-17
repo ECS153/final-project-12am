@@ -1,5 +1,8 @@
 - For front end:
-  
+  - `npm install expo-cli <--global>`
+  - Download Expo Client (in App Store on iphone device).
+    - For iOS: open your camera, scan the code from expo bundle on your web browser, then open Expo.
+    - For Android: scan the code with the barcode scanner within the Expo Client app.
 - For backend:
   - `pip install -r requirements.txt`
   - Compute face embedding: `python extract_embeddings.py --dataset dataset --embeddings output/embeddings.pickle --detector face_detection_model --embedding-model openface_nn4.small2.v1.t7`
