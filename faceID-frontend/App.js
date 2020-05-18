@@ -43,19 +43,24 @@ export default function App() {
 
             //uploading vid to server
             const data = new FormData();
-            //console.log(video.uri);
             data.append('uri', video.uri);
             data.append('vid-name', Date.now().toString());
 
-            fetch('https://c2344539.ngrok.io/', {
-              method: 'POST',
-              body: data,
-            }).then((response) => {
-              response.json().then((body) => {
-                  console.log(body.uri);
-              });
-            });
+            // fetch('https://c2344539.ngrok.io/', {
+            //   method: 'POST',
+            //   body: data,
+            // }).then((response) => {
+            //   // response.json().then((body) => {
+            //   //     console.log(body.uri);
+            //   // }).catch(err=>console.log('inside error ', err));
+            //   console.log(response.json());
+            // }).catch(err=>console.log('Error is ', err));
 
+            fetch('https://c2344539.ngrok.io/', {
+              method: 'GET',
+        }).then((response) => {
+          console.log(response.json());
+        }).catch(err=>console.log('Error is ', err));
             setRecording(false);
         }}>
         </TouchableOpacity>
