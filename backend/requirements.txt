@@ -6,3 +6,5 @@ sklearn
 opencv-python
 tensorflow
 Keras
+Flask
+gunicorn
