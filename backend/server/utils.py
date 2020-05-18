@@ -1,40 +1,37 @@
-import cv2 
-import os 
-# Importing all necessary libraries 
-def extract_image():
-	# Read the video from specified path 
-	cam = cv2.VideoCapture("C:\\Users\\caiqi\\Downloads\\VID_20200517_195111.mp4") 
-	try: 		
-		# creating a folder named data 
-		if not os.path.exists('data'): 
-			os.makedirs('data') 
+import cv2
+import os
 
-	# if not created then raise error 
-	except OSError: 
-		print ('Error: Creating directory of data') 
 
-	# frame 
-	currentframe = 0
+def get_frames():
+    """
+        Get frames from .mp4 file
+        sources: https://www.geeksforgeeks.org/extract-images-from-video-in-python/
+    """
 
-	while(True): 
-		
-		# reading from frame 
-		ret,frame = cam.read() 
+    # The fps of .MOV is around 5 times of the fps of .mp4
+    cam = cv2.VideoCapture('./media/video/sample1.mp4')
 
-		if ret: 
-			# if video is still left continue creating images 
-			name = './data/frame' + str(currentframe) + '.jpg'
-			print ('Creating...' + name) 
+    # Create dir for frames
+    try:
+        if not os.path.exists('data'):
+            os.makedirs('data')
+    except OSError:
+        print('Error: Creating directory of data')
 
-			# writing the extracted images 
-			cv2.imwrite(name, frame) 
+    currentframe = 0
+    while True:
+        ret, frame = cam.read()
+        if ret:
+            if currentframe % 10 == 0:
+                name = './data/frame' + str(round(currentframe / 10)) + '.jpg'
+                print('Creating...' + name)
+                cv2.imwrite(name, frame)
+            currentframe += 1
+        else:
+            break
 
-			# increasing counter so that it will 
-			# show how many frames are created 
-			currentframe += 1
-		else: 
-			break
+    # Release all space and windows once done
+    cam.release()
+    cv2.destroyAllWindows()
 
-	# Release all space and windows once done 
-	cam.release() 
-	cv2.destroyAllWindows() 
+get_frames()
