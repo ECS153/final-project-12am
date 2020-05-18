@@ -6,3 +6,7 @@ sklearn
 opencv-python
 tensorflow
 Keras
+Flask
+python-decouple
+azure-cognitiveservices-vision-face
+Pillow==2.2.1
