@@ -160,47 +160,36 @@ class Analyzer:
         results = self.face_client.face.identify(self.face_ids, PERSON_GROUP_ID)
         print('DEBUG: Identifying faces in {}'.format(os.path.basename(test_image.name)))
         if not results:
-            print('No person identified in the person group for faces from {}.'.format(os.path.basename(test_image.name)))
+            print(
+                'No person identified in the person group for faces from {}.'.format(os.path.basename(test_image.name)))
         for person in results:
             print('DEBUG: Person for face ID {} is identified in {} with a confidence of {}.' \
                   .format(person.face_id, os.path.basename(test_image.name),
                           person.candidates[0].confidence))  # Get topmost confidence score
 
-    def verify(self):
-        # Base url for the Verify and Facelist/Large Facelist operations
-        IMAGE_BASE_URL = 'https://csdx.blob.core.windows.net/resources/Face/Images/'
-        # Create a list to hold the target photos of the same person
-        target_image_file_names = ['Family1-Dad1.jpg', 'Family1-Dad2.jpg']
-        # The source photos contain this person
-        source_image_file_name1 = 'Family1-Dad3.jpg'
-        source_image_file_name2 = 'Family1-Son1.jpg'
+    def verify(self, source_image=None, target_image=None):
+        """
+        :param source_image: image detect upon
+        :param target_image: image compare against
+        :return: confidence of whether the two persons are the same
+        """
+        source_image = 'sample1.jpg'
+        target_image = 'frame0.jpg'
 
-        # Detect face(s) from source image 1, returns a list[DetectedFaces]
-        detected_faces1 = self.face_client.face.detect_with_url(IMAGE_BASE_URL + source_image_file_name1)
-        # Add the returned face's face ID
-        source_image1_id = detected_faces1[0].face_id
-        print('{} face(s) detected from image {}.'.format(len(detected_faces1), source_image_file_name1))
+        # Detect face on two images and get face_id respectively
+        source_image_fd = open('./media/images/' + source_image, 'r+b')
+        target_image_fd = open('./data/' + target_image, 'r+b')
+        detected_faces = self.face_client.face.detect_with_stream(source_image_fd)
+        source_image_id = detected_faces[0].face_id
+        detected_faces = self.face_client.face.detect_with_stream(target_image_fd)
+        target_faces_id = detected_faces[0].face_id
+        print('{} face(s) detected from image {}.'.format(len(detected_faces), source_image))
 
-        # Detect face(s) from source image 2, returns a list[DetectedFaces]
-        detected_faces2 = self.face_client.face.detect_with_url(IMAGE_BASE_URL + source_image_file_name2)
-        # Add the returned face's face ID
-        source_image2_id = detected_faces2[0].face_id
-        print('{} face(s) detected from image {}.'.format(len(detected_faces2), source_image_file_name2))
-
-        # List for the target face IDs (uuids)
-        detected_faces_ids = []
-        # Detect faces from target image url list, returns a list[DetectedFaces]
-        for image_file_name in target_image_file_names:
-            detected_faces = self.face_client.face.detect_with_url(IMAGE_BASE_URL + image_file_name)
-            # Add the returned face's face ID
-            detected_faces_ids.append(detected_faces[0].face_id)
-            print('{} face(s) detected from image {}.'.format(len(detected_faces), image_file_name))
-
-        # Verification example for faces of the same person. The higher the confidence, the more identical the faces in the images are.
-        # Since target faces are the same person, in this example, we can use the 1st ID in the detected_faces_ids list to compare.
-        verify_result_same = self.face_client.face.verify_face_to_face(source_image1_id, detected_faces_ids[0])
+        # Verification for faces of the same person
+        verify_result_same = self.face_client.face.verify_face_to_face(source_image_id, target_faces_id)
         print('Faces from {} & {} are of the same person, with confidence: {}'
-              .format(source_image_file_name1, target_image_file_names[0], verify_result_same.confidence)
+              .format(source_image, target_image, verify_result_same.confidence)
               if verify_result_same.is_identical
               else 'Faces from {} & {} are of a different person, with confidence: {}'
-              .format(source_image_file_name1, target_image_file_names[0], verify_result_same.confidence))
+              .format(source_image, target_image, verify_result_same.confidence))
+        return verify_result_same.confidence

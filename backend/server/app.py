@@ -34,8 +34,9 @@ def index():
     analyzer.verify()
 
     return 'Hello World'
-    # return render_template(index.html, name=None)
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
