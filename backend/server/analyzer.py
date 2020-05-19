@@ -38,121 +38,82 @@ PERSON_GROUP_ID = 'linda'
 TARGET_PERSON_GROUP_ID = str(uuid.uuid4())  # assign a random ID (or name it anything)
 
 
-def get_rectangle(face_dict):
-    # Convert width height to a point in a rectangle
-    rect = face_dict.face_rectangle
-    left = rect.left
-    top = rect.top
-    right = left + rect.width
-    bottom = top + rect.height
-
-    return (left, top), (right, bottom)
-
-
 class Analyzer:
-    def __init__(self):
+    def __init__(self, name, test=1):
         # Create an authenticated FaceClient.
         self.face_client = FaceClient(ENDPOINT, CognitiveServicesCredentials(KEY))
         # Detect a face in an image that contains a single face
-        self.single_face_image_url = 'https://www.biography.com/.image/t_share/MTQ1MzAyNzYzOTgxNTE0NTEz/john-f-kennedy---mini-biography.jpg'
-        self.single_image_name = os.path.basename(self.single_face_image_url)
+        if test:
+            self.videos_frames_test = [file for file in glob.glob('./data/' + name + '/*.jpg')]
+            self.videos_frames_test = random.sample(self.videos_frames_test, k=10)
+        else:
+            self.videos_frames_train = [file for file in glob.glob('./data/' + name + '/*.jpg')]
+            self.videos_frames_train = random.sample(self.videos_frames_train, k=10)
         self.face_ids = []
         self.image = ''
+        self.name = name
+
+    def create(self):
+        # 1. Create the PersonGroup
+        # Create empty Person Group. Person Group ID must be lower case, alphanumeric, and/or with '-', '_'.
+        self.face_client.person_group.create(person_group_id=PERSON_GROUP_ID, name=PERSON_GROUP_ID)
 
     def detect(self, image):
         img = open(image, 'r+b')
-        detected_faces = self.face_client.face.detect_with_stream(img)
-        return detected_faces
-
-    # def show_face_img(self, faces):
-    #     # Download the image from the url
-    #     response = requests.get(self.single_face_image_url)
-    #     img = Image.open(BytesIO(response.content))
-    #
-    #     # For each face returned use the face rectangle and draw a red box.
-    #     print('DEBUG: Drawing rectangle around face... see popup for results.')
-    #     draw = ImageDraw.Draw(img)
-    #     for face in faces:
-    #         draw.rectangle(get_rectangle(face), outline='red')
-    #
-    #     img.show()
+        faces = self.face_client.face.detect_with_stream(img)
+        face_ids = []
+        for face in faces:
+            face_ids.append(face.face_id)
+        return face_ids
 
     def get_train_data(self):
-        print("DEBUG: In init_train_data()")
-        # 1. Create the PersonGroup
-
-        # Create empty Person Group. Person Group ID must be lower case, alphanumeric, and/or with '-', '_'.
-        print('Person group:', PERSON_GROUP_ID)
-#        self.face_client.person_group.create(person_group_id=PERSON_GROUP_ID, name=PERSON_GROUP_ID)
-
-        # Define woman friend
-        linda = self.face_client.person_group_person.create(PERSON_GROUP_ID, "Linda")
+        # Define me
+        me = self.face_client.person_group_person.create(PERSON_GROUP_ID, self.name)
 
         # 2. Detect faces and register to correct person
-
-        # Find all jpeg images of friends in working directory
-        linda_images = [file for file in glob.glob('./images/Linda/*.jpg') ]
-        linda_images = random.choices(linda_images, k=10)
-        for image in linda_images:
-
+        print(len(self.videos_frames_train))
+        for image in self.videos_frames_train:
             w = open(image, 'r+b')
             if self.detect(image):
                 print(image)
-                self.face_client.person_group_person.add_face_from_stream(PERSON_GROUP_ID, linda.person_id, w)
+                self.face_client.person_group_person.add_face_from_stream(PERSON_GROUP_ID, me.person_id, w)
             else:
                 print(image, "no face detected")
 
-
     def train_data(self):
-        print("DEBUG: In train_data()")
         # Train PersonGroup
-        print('DEBUG: Training the person group...')
         self.face_client.person_group.train(PERSON_GROUP_ID)
-
         while True:
             training_status = self.face_client.person_group.get_training_status(PERSON_GROUP_ID)
-            print("DEBUG: Training status: {}.".format(training_status.status))
             if training_status.status is TrainingStatusType.succeeded:
                 break
             elif training_status.status is TrainingStatusType.failed:
                 sys.exit('Training the person group has failed.')
             time.sleep(5)
 
-    def get_test_data(self):
-        print("DEBUG: In get_test_data()")
+    def identify(self):
         # Identify a face against a defined PersonGroup
+        confidence_sum = 0
+        valid_num = 0
+        for img in self.videos_frames_test:
+            # Detect faces
+            face_ids = self.detect(img)
+            if not face_ids:
+                continue
+            valid_num += 1
+            # Identify faces
+            results = self.face_client.face.identify(face_ids, PERSON_GROUP_ID)
+            confidence_list = [person.candidates[0].confidence for person in results]
+            confidence = max(confidence_list)
+            confidence_sum += confidence
+        average_confidence = confidence_sum / valid_num
 
-        # Group image for testing against
-        
-        group_photo = 'IMG_20200429_194030.jpg'
-        IMAGES_FOLDER = './images/Linda-Test/'
-        print('DEBUG: IMAGES_FOLDER = ', IMAGES_FOLDER)
+        print('Confidence level that the person in the video is me:',
+                          average_confidence)  # Get topmost confidence score
 
-        # Get test image
-        test_image_array = glob.glob(os.path.join(IMAGES_FOLDER, group_photo))
-        # self.image = open(test_image_array[0], 'r+b')
-        test_image = open(test_image_array[0], 'r+b')
-        # print('DEBUG: type = ', type(test_image))
-
-        # Detect faces
-        faces = self.face_client.face.detect_with_stream(test_image)
-        for face in faces:
-            self.face_ids.append(face.face_id)
-
-        print('DEBUG: ids = ', self.face_ids)
-
-        print("DEBUG: In identify()")
-
-        # Identify faces
-        results = self.face_client.face.identify(self.face_ids, PERSON_GROUP_ID)
-        print('DEBUG: Identifying faces in {}'.format(os.path.basename(test_image.name)))
-        if not results:
-            print(
-                'No person identified in the person group for faces from {}.'.format(os.path.basename(test_image.name)))
-        for person in results:
-            print('DEBUG: Person for face ID {} is identified in {} with a confidence of {}.' \
-                  .format(person.face_id, os.path.basename(test_image.name),
-                          person.candidates[0].confidence))  # Get topmost confidence score
+    def delete(self):
+        # Delete the main person group.
+        self.face_client.person_group.delete(person_group_id=PERSON_GROUP_ID)
 
     def verify(self, source_image=None, target_image=None):
         """
