@@ -9,7 +9,9 @@ def get_frames():
     """
 
     # The fps of .MOV is around 5 times of the fps of .mp4
-    cam = cv2.VideoCapture('./media/video/sample1.mp4')
+    # cam = cv2.VideoCapture('./media/video/sample1.mp4')
+    cam = cv2.VideoCapture('C:/Users/caiqi/Downloads/video-1589835617.mp4')
+	# C:/Users/caiqi/Downloads/video-1589835617.mp4
 
     # Create dir for frames
     try:
@@ -23,7 +25,7 @@ def get_frames():
         ret, frame = cam.read()
         if ret:
             if currentframe % 10 == 0:
-                name = './data/frame' + str(round(currentframe / 10)) + '.jpg'
+                name = './images/Linda/frame' + str(round(currentframe / 10)) + '.jpg'
                 print('Creating...' + name)
                 cv2.imwrite(name, frame)
             currentframe += 1
@@ -34,4 +36,4 @@ def get_frames():
     cam.release()
     cv2.destroyAllWindows()
 
-get_frames()
+

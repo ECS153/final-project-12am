@@ -5,6 +5,7 @@ import os
 import sys
 import time
 import uuid
+import random
 import requests
 from urllib.parse import urlparse
 from io import BytesIO
@@ -31,7 +32,7 @@ ENDPOINT = os.environ['FACE_ENDPOINT']
 # Used in the Person Group Operations,  Snapshot Operations, and Delete Person Group examples.
 # You can call list_person_groups to print a list of preexisting PersonGroups.
 # SOURCE_PERSON_GROUP_ID should be all lowercase and alphanumeric. For example, 'mygroupname' (dashes are OK).
-PERSON_GROUP_ID = 'mygroup'
+PERSON_GROUP_ID = 'linda'
 
 # Used for the Snapshot and Delete Person Group examples.
 TARGET_PERSON_GROUP_ID = str(uuid.uuid4())  # assign a random ID (or name it anything)
@@ -58,29 +59,23 @@ class Analyzer:
         self.face_ids = []
         self.image = ''
 
-    def detect(self):
-        detected_faces = self.face_client.face.detect_with_url(url=self.single_face_image_url)
-        if not detected_faces:
-            raise Exception('No face detected from image {}'.format(self.single_image_name))
-
-        # Optional:
-        # Save this ID for use in Find Similar
-        first_image_face_ID = detected_faces[0].face_id
-
+    def detect(self, image):
+        img = open(image, 'r+b')
+        detected_faces = self.face_client.face.detect_with_stream(img)
         return detected_faces
 
-    def show_face_img(self, faces):
-        # Download the image from the url
-        response = requests.get(self.single_face_image_url)
-        img = Image.open(BytesIO(response.content))
-
-        # For each face returned use the face rectangle and draw a red box.
-        print('DEBUG: Drawing rectangle around face... see popup for results.')
-        draw = ImageDraw.Draw(img)
-        for face in faces:
-            draw.rectangle(get_rectangle(face), outline='red')
-
-        img.show()
+    # def show_face_img(self, faces):
+    #     # Download the image from the url
+    #     response = requests.get(self.single_face_image_url)
+    #     img = Image.open(BytesIO(response.content))
+    #
+    #     # For each face returned use the face rectangle and draw a red box.
+    #     print('DEBUG: Drawing rectangle around face... see popup for results.')
+    #     draw = ImageDraw.Draw(img)
+    #     for face in faces:
+    #         draw.rectangle(get_rectangle(face), outline='red')
+    #
+    #     img.show()
 
     def get_train_data(self):
         print("DEBUG: In init_train_data()")
@@ -88,34 +83,25 @@ class Analyzer:
 
         # Create empty Person Group. Person Group ID must be lower case, alphanumeric, and/or with '-', '_'.
         print('Person group:', PERSON_GROUP_ID)
-        self.face_client.person_group.create(person_group_id=PERSON_GROUP_ID, name=PERSON_GROUP_ID)
+#        self.face_client.person_group.create(person_group_id=PERSON_GROUP_ID, name=PERSON_GROUP_ID)
 
         # Define woman friend
-        woman = self.face_client.person_group_person.create(PERSON_GROUP_ID, "Woman")
-        man = self.face_client.person_group_person.create(PERSON_GROUP_ID, "Man")
-        child = self.face_client.person_group_person.create(PERSON_GROUP_ID, "Child")
+        linda = self.face_client.person_group_person.create(PERSON_GROUP_ID, "Linda")
 
         # 2. Detect faces and register to correct person
 
         # Find all jpeg images of friends in working directory
-        woman_images = [file for file in glob.glob('*.jpg') if file.startswith("woman")]
-        man_images = [file for file in glob.glob('*.jpg') if file.startswith("man")]
-        child_images = [file for file in glob.glob('*.jpg') if file.startswith("child")]
+        linda_images = [file for file in glob.glob('./images/Linda/*.jpg') ]
+        linda_images = random.choices(linda_images, k=10)
+        for image in linda_images:
 
-        # Add to a woman person
-        for image in woman_images:
             w = open(image, 'r+b')
-            self.face_client.person_group_person.add_face_from_stream(PERSON_GROUP_ID, woman.person_id, w)
+            if self.detect(image):
+                print(image)
+                self.face_client.person_group_person.add_face_from_stream(PERSON_GROUP_ID, linda.person_id, w)
+            else:
+                print(image, "no face detected")
 
-        # Add to a man person
-        for image in man_images:
-            m = open(image, 'r+b')
-            self.face_client.person_group_person.add_face_from_stream(PERSON_GROUP_ID, man.person_id, m)
-
-        # Add to a child person
-        for image in child_images:
-            ch = open(image, 'r+b')
-            self.face_client.person_group_person.add_face_from_stream(PERSON_GROUP_ID, child.person_id, ch)
 
     def train_data(self):
         print("DEBUG: In train_data()")
@@ -137,8 +123,9 @@ class Analyzer:
         # Identify a face against a defined PersonGroup
 
         # Group image for testing against
-        group_photo = 'test-image-person-group.jpg'
-        IMAGES_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+        
+        group_photo = 'IMG_20200429_194030.jpg'
+        IMAGES_FOLDER = './images/Linda-Test/'
         print('DEBUG: IMAGES_FOLDER = ', IMAGES_FOLDER)
 
         # Get test image
