@@ -26,10 +26,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    # Trained, Identify ONLY
     analyzer = Analyzer()
     get_frames()
-    # analyzer.get_train_data()
-    # analyzer.train_data()
+    # Identify Only
     analyzer.get_test_data()
     # analyzer.verify()
     return "Good morning world!"
