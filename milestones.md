@@ -17,7 +17,7 @@
 ### What you plan to do this week (Action Item)
 - Tim Van: prep ML models for flask integration (currently models are used with demo code).
 - Linyi Li: start working the deployment
-- Linda Li:
+- Linda Li: work on azure api
 - Huyen Pham: started on React Native front end code
 
 ### Anything that you’re stuck on
@@ -32,11 +32,11 @@
 ## Weekly report
 ### What you did last week
 - Tim Van:
-
 - Linyi Li:
-
-- Linda Li:
-
+- Linda Li: 
+  - Set Up Flask Server
+  - Deployed to Heroku
+  - Refractor and implement Azure Microsoft Facial Recognition API 
 - Huyen Pham:
   + Set up the front-end for the application
   + Get recorded video from user (recording their own face) and send to server.
@@ -44,7 +44,7 @@
 ### What you plan to do this week (Action Item)
 - Tim Van:
 - Linyi Li:
-- Linda Li:
+- Linda Li: Work on Connecting the front  end flow to the backend flow.
 - Huyen Pham: connect to the server and optimizing the code for capturing the video. Planning to incorporate signing in using regular username and password, in case faceID cannot be detected.
 
 ### Anything that you’re stuck on
