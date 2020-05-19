@@ -39,14 +39,17 @@ le = pickle.loads(open(args["le"], "rb").read())
 
 # initialize the video stream and allow the camera sensor to warmup
 print("[INFO] starting video stream...")
-vs = VideoStream(src=0).start()
-time.sleep(2.0)
+vs = cv2.VideoCapture("test.mp4") #TODO: Changed to path to video
+#time.sleep(2.0)
+res = True
 
 # loop over the frames from the video stream
 while True:
 	# grab the frame from the threaded video stream and resize it
 	# to have a maximum width of 600 pixels
-	frame = vs.read()
+	res, frame = vs.read()
+	if not res:
+		break
 	frame = imutils.resize(frame, width=600)
 
 	# grab the frame dimensions and convert it to a blob
@@ -92,6 +95,8 @@ while True:
 			preds = model.predict(face)[0]
 			j = np.argmax(preds)
 			label = le.classes_[j]
+
+			print("prediciton: ", preds, "confidence: ", confidence)
 
 			# draw the label and bounding box on the frame
 			label = "{}: {:.4f}".format(label, preds[j])
