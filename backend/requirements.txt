@@ -10,4 +10,4 @@ Flask
 gunicorn
 python-decouple
 azure-cognitiveservices-vision-face
-Pillow==2.2.1
+Pillow>=6.2.2
