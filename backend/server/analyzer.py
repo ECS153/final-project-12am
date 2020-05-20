@@ -128,5 +128,10 @@ class Analyzer:
         return verify_result_same.confidence
 
     def detect_liveness(self):
-        return True
+        # res = detect_liveness('./media/video/kenny-fake.mp4')
+        # print("DEBUG: res = ", res)
+        # if res:
+        #     return True
+        # return False
+        pass
 
