@@ -11,3 +11,4 @@ gunicorn
 python-decouple
 azure-cognitiveservices-vision-face
 Pillow>=6.2.2
+flask-cors

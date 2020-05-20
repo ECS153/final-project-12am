@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from utils import (
     get_frames,
     delete_frames,
@@ -8,8 +9,13 @@ from flask import (
 )
 from analyzer import Analyzer
 import os
+from flask import Flask, request
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+CORS(app)
+
+ALLOWED_EXTENSIONS = set(['mov','mp4'])
 
 
 # Set environment variables
@@ -51,12 +57,15 @@ def train():
     analyzer.train()
     return "Trained Person Group."
 
-
 @app.route('/delete')
 def delete():
     analyzer.delete()
     return "Deleted Person Group."
 
+@app.route('/upload', methods=['GET','POST'])
+def fileUpload():
+    print(request.files['file'])
+    return "Done"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
