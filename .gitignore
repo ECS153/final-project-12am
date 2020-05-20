@@ -1,6 +1,6 @@
 env/
 .*/
 *.whl
-__pycache__/
+backend/server/__pycache__/*
 *.pyc
 venv/
