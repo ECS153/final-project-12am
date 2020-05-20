@@ -7,9 +7,9 @@ export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [recording, setRecording] = useState(false);
   const [cameraRef, setCameraRef] = useState(null);
-  const options = {
+  const camera_options = {
     mute: true,
-    maxDuration: 3,
+    maxDuration: 1,
   }
   
   useEffect(() => {
@@ -37,30 +37,30 @@ export default function App() {
         <TouchableOpacity style={recording ? styles.recorderButtonStarted : styles.recorderButton}
         onPress={async() => {
             setRecording(true);
-            const video = await cameraRef.recordAsync(options);
+            const video = await cameraRef.recordAsync(camera_options);
             //console.log('video', video);
             setRecording(false);
 
             //uploading vid to server
-            const data = new FormData();
-            data.append('uri', video.uri);
-            data.append('vid-name', Date.now().toString());
+            var formData = new FormData();
+            formData.append('file', {
+              uri: video.uri,
+              name: Date.now().toString() + ".mov"
+            });
+            
+            fetch('https://flask-server12am.herokuapp.com/upload', {
+              method: 'POST',
+              body: formData
+            }).then((res) => {
+              res.json().then((result) => {
+                console.log(result);
+              }).catch(error => {
+                console.log("Inner Error ", error);
+              })
+            }).catch(err => {
+              console.log("Error ", err);
+            });
 
-            // fetch('https://c2344539.ngrok.io/', {
-            //   method: 'POST',
-            //   body: data,
-            // }).then((response) => {
-            //   // response.json().then((body) => {
-            //   //     console.log(body.uri);
-            //   // }).catch(err=>console.log('inside error ', err));
-            //   console.log(response.json());
-            // }).catch(err=>console.log('Error is ', err));
-
-            fetch('https://c2344539.ngrok.io/', {
-              method: 'GET',
-        }).then((response) => {
-          console.log(response.json());
-        }).catch(err=>console.log('Error is ', err));
             setRecording(false);
         }}>
         </TouchableOpacity>
