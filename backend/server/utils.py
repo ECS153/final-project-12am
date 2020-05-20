@@ -2,14 +2,14 @@ import cv2
 import os
 
 
-def get_frames(name):
+def get_frames(user_name):
     """
         Get frames from .mp4 file
         sources: https://www.geeksforgeeks.org/extract-images-from-video-in-python/
     """
 
     # The fps of .MOV is around 5 times of the fps of .mp4
-    cam = cv2.VideoCapture('./media/video/linda-sample.mp4')
+    cam = cv2.VideoCapture('./media/video/linda-real.mp4')
 
     # Create dir for frames
     try:
@@ -23,9 +23,9 @@ def get_frames(name):
         ret, frame = cam.read()
         if ret:
             if currentframe % 10 == 0:
-                name = './data/'+ name + '/frame' + str(round(currentframe / 10)) + '.jpg'
-                print('Creating...' + name)
-                cv2.imwrite(name, frame)
+                file_name = './data/' + user_name + '/frame' + str(round(currentframe / 10)) + '.jpg'
+                print('Creating...' + file_name)
+                cv2.imwrite(file_name, frame)
             currentframe += 1
         else:
             break
@@ -35,3 +35,5 @@ def get_frames(name):
     cv2.destroyAllWindows()
 
 
+def delete_frames():
+    pass
