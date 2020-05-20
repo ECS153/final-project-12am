@@ -12,6 +12,8 @@ from azure.cognitiveservices.vision.face.models import (
     OperationStatusType,
 )
 
+from liveness.liveness_detector import *
+
 # MS Face Recognition
 os.environ['FACE_SUBSCRIPTION_KEY'] = '50aaf75a5e464e1abb264a7aec7414c2'
 os.environ['FACE_ENDPOINT'] = 'https://mycsresourceface.cognitiveservices.azure.com/'
@@ -128,10 +130,8 @@ class Analyzer:
         return verify_result_same.confidence
 
     def detect_liveness(self):
-        # res = detect_liveness('./media/video/kenny-fake.mp4')
-        # print("DEBUG: res = ", res)
-        # if res:
-        #     return True
-        # return False
-        pass
-
+        res = detect_liveness('./media/video/kenny-fake.mp4')
+        print("DEBUG: res = ", res)
+        if res:
+            return True
+        return False

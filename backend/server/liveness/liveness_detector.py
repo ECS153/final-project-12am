@@ -98,15 +98,16 @@ def check_liveness(vs, net, model, le):
 def detect_liveness(path):
     # load our serialized face detector from disk
     print("[INFO] loading face detector...")
-    protoPath = os.path.sep.join(["face_detector", "deploy.prototxt"])
-    modelPath = os.path.sep.join(["face_detector",
+    protoPath = os.path.sep.join(["liveness","face_detector", "deploy.prototxt"])
+    modelPath = os.path.sep.join(["liveness","face_detector",
         "res10_300x300_ssd_iter_140000.caffemodel"])
+
     net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
     # load the liveness detector model and label encoder from disk
     print("[INFO] loading liveness detector...")
-    model = load_model("liveness.model")
-    le = pickle.loads(open("le.pickle", "rb").read())
+    model = load_model("./liveness/liveness.model")
+    le = pickle.loads(open("./liveness/le.pickle", "rb").read())
 
     # initialize the video stream and allow the camera sensor to warmup
     print("[INFO] starting video stream...")
