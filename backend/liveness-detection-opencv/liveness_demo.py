@@ -1,5 +1,5 @@
 # USAGE
-# python liveness_demo.py --model liveness.model --le le.pickle --detector face_detector
+# python3 liveness_demo.py --model liveness.model --le le.pickle --detector face_detector
 
 # import the necessary packages
 from imutils.video import VideoStream
@@ -39,9 +39,12 @@ le = pickle.loads(open(args["le"], "rb").read())
 
 # initialize the video stream and allow the camera sensor to warmup
 print("[INFO] starting video stream...")
-vs = cv2.VideoCapture("test.mp4") #TODO: Changed to path to video
+vs = cv2.VideoCapture("videos/linda-real.mp4") #TODO: Changed to path to video
 #time.sleep(2.0)
 res = True
+
+real = 0
+total = 0
 
 # loop over the frames from the video stream
 while True:
@@ -98,6 +101,10 @@ while True:
 
 			print("prediciton: ", preds, "confidence: ", confidence)
 
+			if label == 'real':
+				real += 1
+			total += 1
+
 			# draw the label and bounding box on the frame
 			label = "{}: {:.4f}".format(label, preds[j])
 			cv2.putText(frame, label, (startX, startY - 10),
@@ -113,6 +120,8 @@ while True:
 	if key == ord("q"):
 		break
 
+print("Confidence of liveness: ", float(real)/total)
+
 # do a bit of cleanup
 cv2.destroyAllWindows()
-vs.stop()
+vs.release()

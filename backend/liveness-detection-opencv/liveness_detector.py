@@ -13,8 +13,13 @@ import cv2
 import os
 
 confidence_threshhold = 0.5
+liveness_threshold = 0.9
 
 def check_liveness(vs, net, model, le):
+    # variables used to find the confidence in liveness
+    real = 0
+    total = 0
+
     # loop over the frames from the video stream
     while True:
         # grab the frame from the threaded video stream and resize it
@@ -69,6 +74,9 @@ def check_liveness(vs, net, model, le):
                 label = le.classes_[j]
 
                 print("prediciton: ", preds, "confidence: ", confidence)
+                if label == 'real':
+                    real += 1
+                total += 1
 
                 # draw the label and bounding box on the frame
                 label = "{}: {:.4f}".format(label, preds[j])
@@ -84,6 +92,8 @@ def check_liveness(vs, net, model, le):
         # if the `q` key was pressed, break from the loop
         if key == ord("q"):
             break
+
+    return float(real)/total
 
 def detect_liveness(path):
     # load our serialized face detector from disk
@@ -102,10 +112,11 @@ def detect_liveness(path):
     print("[INFO] starting video stream...")
     vs = cv2.VideoCapture(path) #TODO: Changed to path to video
     #time.sleep(2.0)
-    res = True
 
-    check_liveness(vs, net, model, le)
+    res = check_liveness(vs, net, model, le)
 
     # do a bit of cleanup
     cv2.destroyAllWindows()
-    vs.stop()
+    vs.release()
+
+    return res >= liveness_threshold
