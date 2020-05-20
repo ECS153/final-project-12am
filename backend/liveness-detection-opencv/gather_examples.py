@@ -6,7 +6,7 @@
 import numpy as np
 import argparse
 import cv2
-import os
+import os, os.path
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -31,9 +31,10 @@ net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
 # open a pointer to the video file stream and initialize the total
 # number of frames read and saved thus far
+
 vs = cv2.VideoCapture(args["input"])
 read = 0
-saved = 0
+saved = len([name for name in os.listdir(args["output"])])
 
 # loop over frames from the video file stream
 while True:
