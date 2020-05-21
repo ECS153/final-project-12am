@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from utils import (
     get_frames,
     delete_frames,
