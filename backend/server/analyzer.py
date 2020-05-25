@@ -129,9 +129,11 @@ class Analyzer:
               .format(source_image, target_image, verify_result_same.confidence))
         return verify_result_same.confidence
 
-    def detect_liveness(self):
-        res = detect_liveness('./media/video/kenny-fake.mp4')
-        print("DEBUG: res = ", res)
+    @staticmethod
+    def detect_liveness(path):
+        print("DEBUG: detecting livenese of file, ", path)
+        res = detect_liveness(path)
+        print("DEBUG: liveness result = ", res)
         if res:
             return True
         return False
