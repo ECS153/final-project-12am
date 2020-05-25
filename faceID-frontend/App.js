@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { Camera } from 'expo-camera';
 import { render } from 'react-dom';
 
@@ -10,8 +10,23 @@ export default function App() {
   const camera_options = {
     mute: true,
     maxDuration: 1,
-  }
+  };
   
+  var createResultAlert = function (alertTitle, alertMsg) {
+    Alert.alert(
+      alertTitle,
+      alertMsg,
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  }
+
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
@@ -53,9 +68,18 @@ export default function App() {
               body: formData
             }).then((res) => {
               res.json().then((result) => {
-                console.log(result);
+                const answer = result["result"];
+                console.log(answer)
+                if (answer == "True") {
+                  console.log("Accept");
+                  createResultAlert("Access Granted", "Welcome Back!");
+                } else {
+                  console.log("Denied");
+                  createResultAlert("Access Denied", "We cannot verify your log in. Please try again with username and password");
+                }
+
               }).catch(error => {
-                console.log("Inner Error ", error);
+                console.log("Json error ", error);
               })
             }).catch(err => {
               console.log("Error ", err);
