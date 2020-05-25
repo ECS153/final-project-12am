@@ -7,6 +7,7 @@ from flask import (
     flash,
     render_template,
     redirect,
+    jsonify,
 )
 from analyzer import Analyzer
 import os
@@ -99,7 +100,12 @@ def file_upload():
             print('DEBUG: file saved!')
             analyzer.detect_liveness(filename)
             # detect()
-            return redirect(request.url)
+            # return redirect(request.url)
+            '''
+            Classification and return the result here
+            '''
+            result = {'result': 'True'}
+            return jsonify(result)
 
     return render_template('upload.html')
 
