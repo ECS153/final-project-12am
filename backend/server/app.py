@@ -37,7 +37,6 @@ def detect():
     analyzer.create()
     analyzer.train()
     confidence = analyzer.identify()
-    # analyzer.detect_liveness()
     delete_frames()
     analyzer.delete()
     if confidence > THRESHOLD:
@@ -76,6 +75,7 @@ def delete():
     return "Deleted Person Group."
 
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -97,8 +97,9 @@ def file_upload():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            print('DEBUG: file saved!')
-            analyzer.detect_liveness(filename)
+            print('DEBUG: file saved!',filename)
+            path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            analyzer.detect_liveness(path)
             # detect()
             # return redirect(request.url)
             '''

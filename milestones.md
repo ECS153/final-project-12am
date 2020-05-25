@@ -57,3 +57,31 @@
 
 ## Update Video:
 `https://drive.google.com/drive/folders/1QlPPQJk_-GDOLTG57H_NnjUCIWEaHrs-?usp=sharing`
+
+# Week 3
+## Weekly report
+### What you did last week
+- Tim Van:
+- Linyi Li:
+- Linda Li: 
+- Huyen Pham:
+  + Set up the front-end for the application
+  + Connected to server and optimized code for capturing the video. Get back response from server for appropriate output.
+
+### What you plan to do this week (Action Item)
+- Tim Van:
+- Linyi Li: 
+- Linda Li: 
+- Huyen Pham: preparing for slides and final presentation. Improving frontend code if trouble found.
+
+### Anything that you’re stuck on
+ 
+
+## Design Doc:
+`https://docs.google.com/document/d/1nIsipAxfO5jfLApIZgDxO3F2lcS41-5bB2gtYL8rTf0/edit?usp=sharing`
+
+## Update Video:
+``
+
+# Final Presentation
+- Slide: `https://docs.google.com/presentation/d/1WwT7TlG0Ny_NjvgmqHJvn5_o7Zt8DVIPmVX1da8Folg/edit?usp=sharing`
