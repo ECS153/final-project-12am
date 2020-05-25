@@ -1,0 +1,20 @@
+<!doctype html>
+<title>Upload video</title>
+<div class="container">
+    <div class="row">
+          <h1>Upload video</h1>
+        <hr>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Select video</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="file" id="video">
+                    <label class="custom-file-label" for="video">Select video...</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Upload video</button>
+        </form>
+
+    </div>
+</div>

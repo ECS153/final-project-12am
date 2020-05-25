@@ -9,7 +9,8 @@ def get_frames(user_name):
     """
 
     # The fps of .MOV is around 5 times of the fps of .mp4
-    cam = cv2.VideoCapture('./media/video/linda-real.mp4')
+    # cam = cv2.VideoCapture('./media/video/linda-real.mp4')
+    cam = cv2.VideoCapture('./media/test/sample1.mp4')
 
     # Create dir for frames
     try:
