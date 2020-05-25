@@ -82,3 +82,6 @@
 
 ## Update Video:
 ``
+
+# Final Presentation
+- Slide: `https://docs.google.com/presentation/d/1WwT7TlG0Ny_NjvgmqHJvn5_o7Zt8DVIPmVX1da8Folg/edit?usp=sharing`
