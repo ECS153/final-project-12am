@@ -1,0 +1,8 @@
+env/
+.*/
+*.whl
+backend/server/__pycache__/*
+*.pyc
+venv/
+backend/server/__pycache__/analyzer.cpython-37.pyc
+backend/server/__pycache__/app.cpython-37.pyc
