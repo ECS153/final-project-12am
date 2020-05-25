@@ -32,8 +32,7 @@ THRESHOLD = 0.50
 def index():
     print("start")
     get_frames(user_name)
-    confidence = analyzer.identify()
-    analyzer.detect_liveness()
+    confidence = 1 #analyzer.identify()
     delete_frames()
     if analyzer.detect_liveness() and confidence > THRESHOLD:
         return 'Detect result: True'
