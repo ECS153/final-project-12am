@@ -22,7 +22,7 @@ CORS(app)
 os.environ['FLASK_APP'] = 'app.py'
 os.environ['FLASK_ENV'] = 'development'
 
-app.config["UPLOAD_FOLDER"] = './media/test'
+app.config["UPLOAD_FOLDER"] = './media/video'
 ALLOWED_EXTENSIONS = {'mov', 'mp4'}
 THRESHOLD = 0.50
 
@@ -76,14 +76,17 @@ def file_upload():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            print('DEBUG: file saved!',filename)
+            print('DEBUG: file saved!', filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
             # Configure for training/testing
-            # person_name = request.files['name']
-            person_name = 'Linda'
+            if 'name' not in request.files:
+                person_name = 'Linda'
+            else:
+                person_name = request.files['name']
             analyzer = Analyzer(person_name)
-            get_frames(person_name)
+            get_frames(person_name, path)
+            analyzer.delete()
             analyzer.create()
             analyzer.train()
             confidence = analyzer.identify()
@@ -95,7 +98,9 @@ def file_upload():
             else:
                 result['result'] = 'False'
             analyzer.delete()
+            print('DEBUG: detection result: ', result['result'])
             return jsonify(result)
+            # return redirect(request.url)
 
     return render_template('upload.html')
 
