@@ -36,7 +36,6 @@ def detect():
     analyzer.create()
     analyzer.train()
     confidence = analyzer.identify()
-    # analyzer.detect_liveness()
     delete_frames()
     analyzer.delete()
     if confidence > THRESHOLD:
@@ -73,6 +72,7 @@ def train():
 def delete():
     analyzer.delete()
     return "Deleted Person Group."
+
 
 
 def allowed_file(filename):

@@ -66,18 +66,16 @@ def check_liveness(vs, net, model, le):
                 face = face.astype("float") / 255.0
                 face = img_to_array(face)
                 face = np.expand_dims(face, axis=0)
-
                 # pass the face ROI through the trained liveness detector
                 # model to determine if the face is "real" or "fake"
                 preds = model.predict(face)[0]
                 j = np.argmax(preds)
                 label = le.classes_[j]
 
-                print("prediciton: ", preds, "confidence: ", confidence)
+                #print("prediciton: ", preds, "confidence: ", confidence) #Debug 
                 if label == 'real':
                     real += 1
                 total += 1
-
                 # draw the label and bounding box on the frame
                 label = "{}: {:.4f}".format(label, preds[j])
                 cv2.putText(frame, label, (startX, startY - 10),
@@ -86,12 +84,15 @@ def check_liveness(vs, net, model, le):
                     (0, 0, 255), 2)
 
         # show the output frame and wait for a key press
+        '''
+        #Debug
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
-
+        print('here3')
         # if the `q` key was pressed, break from the loop
         if key == ord("q"):
             break
+        '''
 
     return float(real)/total
 
