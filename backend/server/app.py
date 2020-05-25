@@ -62,8 +62,13 @@ def delete():
 
 @app.route('/upload', methods=['GET','POST'])
 def fileUpload():
-    print(request.files['file'])
-    return "Done"
+    video = request.files['file']
+    print("Video ", video)
+    '''
+    Classification and return the result here
+    '''
+    result = {'result': 'True'}
+    return jsonify(result)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
