@@ -10,7 +10,7 @@ from flask import (
 )
 from analyzer import Analyzer
 import os
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 
@@ -84,6 +84,9 @@ def allowed_file(filename):
 def file_upload():
     print('DEBUG: uploading file...')
     if request.method == 'POST':
+        #username
+        username = request.form['username']
+        print("username ", username)
         # Check file existence
         if 'file' not in request.files:
             flash('No file part')

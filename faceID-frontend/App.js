@@ -5,7 +5,20 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Button, TextInput } from 'react-native';
 import { Camera } from 'expo-camera';
 
-
+function createResultAlert(alertTitle, alertMsg) {
+  Alert.alert(
+    alertTitle,
+    alertMsg,
+    [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel"
+      }
+    ],
+    { cancelable: false }
+  );
+}
 
 function Name({navigation}) {
   const [text, setText] = useState('');
@@ -22,9 +35,9 @@ function Name({navigation}) {
       />
       <TouchableOpacity onPress={() => {
         if (text=="" || text=="Type your username here") {
-
+          createResultAlert("No Username Found", "Please Enter Your Username");
         } else {
-          navigation.navigate('Cam', {username: text,})
+          navigation.navigate('Cam', {username: text,});
         }
       }}>
         <View style={styles.nextButton}>
@@ -39,7 +52,7 @@ function Name({navigation}) {
 }
 
 function Cam({route}) {
-  console.log("username is ", route.params);
+  const username = route.params["username"];
   const [hasPermission, setHasPermission] = useState(null);
   const [recording, setRecording] = useState(false);
   const [cameraRef, setCameraRef] = useState(null);
@@ -48,20 +61,6 @@ function Cam({route}) {
     maxDuration: 1,
   };
   
-  var createResultAlert = function (alertTitle, alertMsg) {
-    Alert.alert(
-      alertTitle,
-      alertMsg,
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        }
-      ],
-      { cancelable: false }
-    );
-  }
 
   useEffect(() => {
     (async () => {
@@ -90,7 +89,7 @@ function Cam({route}) {
               setRecording(true);
               const video = await cameraRef.recordAsync(camera_options);
               console.log('video', video);
-              
+              uploadInfo(username, video);
               setRecording(false);
           }}>
           </TouchableOpacity>
@@ -110,6 +109,7 @@ function uploadInfo(username, video) {
      uri: video.uri,
      name: Date.now().toString() + ".mov"
    });
+   formData.append('username', username);
    
    fetch('https://flask-server12am.herokuapp.com/upload', {
      method: 'POST',
