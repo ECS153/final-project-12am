@@ -99,10 +99,19 @@ class Analyzer:
             # Identify faces
             print("DEBUG: person group ID Identify",self.person_group_id)
             results = self.face_client.face.identify(face_ids, self.person_group_id)
-            confidence_list = [person.candidates[0].confidence for person in results]
+
+            confidence_list = [0] # initial val in case confidence_list is empty
+
+            for person in results:
+                if person.candidates:
+                    confidence_list.append(person.candidates[0].confidence)
+
             confidence = max(confidence_list)
             confidence_sum += confidence
-        average_confidence = confidence_sum / valid_num
+        if confidence_sum == 0:
+            average_confidence = 0
+        else:
+            average_confidence = confidence_sum / valid_num
         print('Confidence level that the person in the video is me:', average_confidence)
         return average_confidence
 
