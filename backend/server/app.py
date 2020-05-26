@@ -25,6 +25,9 @@ os.environ['FLASK_ENV'] = 'development'
 app.config["UPLOAD_FOLDER"] = './media/video'
 ALLOWED_EXTENSIONS = {'mov', 'mp4'}
 THRESHOLD = 0.50
+'''To be commented out when Huyen implemented her stuff'''
+user_name = "Linda"
+analyzer = Analyzer(user_name)
 
 
 @app.route('/')
@@ -32,27 +35,27 @@ def index():
     return 'Welcome to Lively'
 
 
-# @app.route('/create')
-# def create():
-#     analyzer.create()
-#     return "Created Person Group."
-#
-#
-# @app.route('/train')
-# def train():
-#     # Train with the videos upload
-#     get_frames(user_name)
-#     # Detect faces from the frames and add to Person Group
-#     analyzer.get_train_data()
-#     # Use the frames in the person group to train
-#     analyzer.train()
-#     return "Trained Person Group."
+@app.route('/create')
+def create():
+    analyzer.create()
+    return "Created Person Group."
 
 
-# @app.route('/delete')
-# def delete():
-#     analyzer.delete()
-#     return "Deleted Person Group."
+@app.route('/train')
+def train():
+    # Train with the videos upload
+    get_frames(user_name, "./media/videos/linda-real.mp4")
+    # Detect faces from the frames and add to Person Group
+    analyzer.get_train_data()
+    # Use the frames in the person group to train
+    analyzer.train()
+    return "Trained Person Group."
+
+
+@app.route('/delete')
+def delete():
+    analyzer.delete()
+    return "Deleted Person Group."
 
 
 def allowed_file(filename):
@@ -86,9 +89,11 @@ def file_upload():
                 person_name = request.files['name']
             analyzer = Analyzer(person_name)
             get_frames(person_name, path)
-            analyzer.delete()
-            analyzer.create()
-            analyzer.train()
+            # analyzer.delete()
+            # print('DEBUG: Delete Done')
+            # analyzer.create()
+            # print('DEBUG: Create Done')
+            # analyzer.train()
             confidence = analyzer.identify()
             is_lively = analyzer.detect_liveness(path)
 
@@ -97,7 +102,6 @@ def file_upload():
                 result['result'] = 'True'
             else:
                 result['result'] = 'False'
-            analyzer.delete()
             print('DEBUG: detection result: ', result['result'])
             return jsonify(result)
             # return redirect(request.url)
