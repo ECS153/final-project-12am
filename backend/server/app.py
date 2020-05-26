@@ -68,8 +68,8 @@ def file_upload():
     print('DEBUG: uploading file...')
     if request.method == 'POST':
         #username
-        username = request.form['username']
-        print("username ", username)
+        user_name = request.form['username']
+        print("username ", user_name)
         # Check file existence
         if 'file' not in request.files:
             flash('No file part')
@@ -84,14 +84,8 @@ def file_upload():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             print('DEBUG: file saved!', filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-
-            # Configure for training/testing
-            if 'name' not in request.files:
-                person_name = 'Linda'
-            else:
-                person_name = request.files['name']
-            analyzer = Analyzer(person_name)
-            get_frames(person_name, path)
+            analyzer = Analyzer(user_name)
+            get_frames(user_name, path)
             # analyzer.delete()
             # print('DEBUG: Delete Done')
             # analyzer.create()
