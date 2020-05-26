@@ -20,7 +20,7 @@ os.environ['FACE_ENDPOINT'] = 'https://mycsresourceface.cognitiveservices.azure.
 
 KEY = os.environ['FACE_SUBSCRIPTION_KEY']
 ENDPOINT = os.environ['FACE_ENDPOINT']
-TRAIN_DATA_NUM = 10
+TRAIN_DATA_NUM = 8
 
 
 class Analyzer:
@@ -38,8 +38,8 @@ class Analyzer:
         """
         Create a PersonGroup and a Person.
         """
+        print("DEBUG: Person created: ",self.person_group_id)
         self.face_client.person_group.create(person_group_id=self.person_group_id, name=self.person_group_id)
-        self.face_client.person_group_person.create(self.person_group_id, self.person_id)
 
     def detect(self, image):
         """
@@ -55,10 +55,14 @@ class Analyzer:
 
     def get_train_data(self):
         # Detect faces and register to correct person
+        me = self.face_client.person_group_person.create(self.person_group_id, self.person_id)
+        print("DEBUG: Person created: ", self.person_group_id, "person ID: ",self.person_id)
+        print("MY ID: ",me.person_id)
         for image in self.videos_frames:
             image_fd = open(image, 'r+b')
             if self.detect(image):
-                self.face_client.person_group_person.add_face_from_stream(self.person_group_id, self.person_id, image_fd)
+                # print("person_ID:",me.person_id)
+                self.face_client.person_group_person.add_face_from_stream(self.person_group_id, me.person_id, image_fd)
             else:
                 print(image, "no face detected")
 
@@ -87,13 +91,22 @@ class Analyzer:
             face_ids = self.detect(img)
             if not face_ids:
                 continue
-            valid_num += 1
+
             # Identify faces
+            print("DEBUG: person group ID Identify",self.person_group_id)
             results = self.face_client.face.identify(face_ids, self.person_group_id)
-            confidence_list = [person.candidates[0].confidence for person in results]
-            confidence = max(confidence_list)
-            confidence_sum += confidence
-        average_confidence = confidence_sum / valid_num
+            confidence_list = [] # initial val in case confidence_list is empty
+            for person in results:
+                if person.candidates:
+                    confidence_list.append(person.candidates[0].confidence)
+            if confidence_list:
+                confidence = max(confidence_list)
+                valid_num += 1
+                confidence_sum += confidence
+        if confidence_sum == 0:
+            average_confidence = 0
+        else:
+            average_confidence = confidence_sum / valid_num
         print('Confidence level that the person in the video is me:', average_confidence)
         return average_confidence
 
