@@ -68,6 +68,9 @@ def file_upload():
     print('DEBUG: uploading file...')
     if request.method == 'POST':
         #username
+        if 'username' not in request.form:
+            flash("No username")
+            return redirect(request.url)
         user_name = request.form['username']
         print("username ", user_name)
         # Check file existence

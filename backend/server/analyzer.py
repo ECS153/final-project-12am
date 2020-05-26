@@ -20,7 +20,7 @@ os.environ['FACE_ENDPOINT'] = 'https://mycsresourceface.cognitiveservices.azure.
 
 KEY = os.environ['FACE_SUBSCRIPTION_KEY']
 ENDPOINT = os.environ['FACE_ENDPOINT']
-TRAIN_DATA_NUM = 9
+TRAIN_DATA_NUM = 8
 
 
 class Analyzer:
