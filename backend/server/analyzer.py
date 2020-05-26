@@ -40,7 +40,6 @@ class Analyzer:
         """
         print("DEBUG: Person created: ",self.person_group_id)
         self.face_client.person_group.create(person_group_id=self.person_group_id, name=self.person_group_id)
-        # self.face_client.person_group_person.create(self.person_group_id, self.person_id)
 
     def detect(self, image):
         """
@@ -56,9 +55,6 @@ class Analyzer:
 
     def get_train_data(self):
         # Detect faces and register to correct person
-        # self.face_client.person_group_person.create(self.person_group_id, self.person_id)
-        # print("DEBUG: CREATE ANOTHER SELF")
-        # self.face_client.person_group.create(person_group_id=self.person_group_id, name=self.person_group_id)
         me = self.face_client.person_group_person.create(self.person_group_id, self.person_id)
         print("DEBUG: Person created: ", self.person_group_id, "person ID: ",self.person_id)
         print("MY ID: ",me.person_id)
@@ -95,19 +91,18 @@ class Analyzer:
             face_ids = self.detect(img)
             if not face_ids:
                 continue
-            valid_num += 1
+
             # Identify faces
             print("DEBUG: person group ID Identify",self.person_group_id)
             results = self.face_client.face.identify(face_ids, self.person_group_id)
-
-            confidence_list = [0] # initial val in case confidence_list is empty
-
+            confidence_list = [] # initial val in case confidence_list is empty
             for person in results:
                 if person.candidates:
                     confidence_list.append(person.candidates[0].confidence)
-
-            confidence = max(confidence_list)
-            confidence_sum += confidence
+            if confidence_list:
+                confidence = max(confidence_list)
+                valid_num += 1
+                confidence_sum += confidence
         if confidence_sum == 0:
             average_confidence = 0
         else:
