@@ -32,6 +32,7 @@
 ## Weekly report
 ### What you did last week
 - Tim Van:
+  + Trained and deployed the Liveness model to the flask server
 - Linyi Li:
   + set up and implemented Microsoft api 
   + design and reafactor Analyzer (to encapsulate the Microsoft api as well as Liveness model)
@@ -62,6 +63,8 @@
 ## Weekly report
 ### What you did last week
 - Tim Van:
+  + Deployed Production Server to Linode with proper precautions in place (setting up firewalls etc.)
+  + Tested the data flow of the entire stack.
 - Linyi Li:
 - Linda Li: 
   + Implemented POST request handler which the server will receive a video and a username string
@@ -71,7 +74,7 @@
   + Connected to server and optimized code for capturing the video. Get back response from server for appropriate output.
 
 ### What you plan to do this week (Action Item)
-- Tim Van:
+- Tim Van: Helping in preperation of the presentation video. Robust testing of current deployment. 
 - Linyi Li: 
 - Linda Li: prepare presentation slides and video.
 - Huyen Pham: preparing for slides and final presentation. Improving frontend code if trouble found.
