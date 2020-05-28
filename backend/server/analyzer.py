@@ -61,8 +61,9 @@ class Analyzer:
         # print("MY ID: ",me.person_id)
         for image in self.videos_frames:
             image_fd = open(image, 'r+b')
+            # print("Img Size: ", image_fd.size)
             if self.detect(image):
-                # print("person_ID:",me.person_id)
+                print("person_ID:", me.person_id)
                 self.face_client.person_group_person.add_face_from_stream(self.person_group_id, me.person_id, image_fd)
             else:
                 print(image, "no face detected")
@@ -92,6 +93,7 @@ class Analyzer:
             return 0
         for img in self.videos_frames:
             # Detect faces
+
             face_ids = self.detect(img)
             if not face_ids:
                 continue
@@ -99,6 +101,7 @@ class Analyzer:
             # Identify faces
             # print("DEBUG: person group ID Identify",self.person_group_id)
             results = self.face_client.face.identify(face_ids, self.person_group_id)
+            print(results)
             confidence_list = [] # initial val in case confidence_list is empty
             for person in results:
                 if person.candidates:

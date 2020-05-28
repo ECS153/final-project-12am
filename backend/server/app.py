@@ -27,7 +27,7 @@ ALLOWED_EXTENSIONS = {'mov', 'mp4'}
 THRESHOLD = 0.50
 
 '''To be commented out when Huyen implemented her stuff'''
-username = "Kenny"
+user_name = "Kenny"
 
 
 @app.route('/')
@@ -37,16 +37,16 @@ def index():
 
 @app.route('/create')
 def create():
-    analyzer = Analyzer(username)
+    analyzer = Analyzer(user_name)
     analyzer.create()
     return "Created Person Group."
 
 
 @app.route('/train')
 def train():
-    analyzer = Analyzer(username)
+    analyzer = Analyzer(user_name)
     # Train with the videos upload
-    get_frames(username, "./media/video/kenny-real.mp4")
+    get_frames(user_name, "./media/video/kenny-real.mp4")
     # Detect faces from the frames and add to Person Group
     analyzer.get_train_data()
     # Use the frames in the person group to train
@@ -56,14 +56,14 @@ def train():
 
 @app.route('/delete')
 def delete():
-    analyzer = Analyzer(username)
+    analyzer = Analyzer(user_name)
     analyzer.delete()
     return "Deleted Person Group."
 
 
 @app.route('/clear')
 def clear():
-    clear_frames(username)
+    clear_frames(user_name)
     return "Clear all frames in folder 'data'"
 
 
