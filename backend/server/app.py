@@ -1,6 +1,6 @@
 from utils import (
     get_frames,
-    delete_frames,
+    clear_frames,
 )
 from flask import (
     Flask,
@@ -25,9 +25,9 @@ os.environ['FLASK_ENV'] = 'development'
 app.config["UPLOAD_FOLDER"] = './media/video'
 ALLOWED_EXTENSIONS = {'mov', 'mp4'}
 THRESHOLD = 0.50
+
 '''To be commented out when Huyen implemented her stuff'''
-user_name = "Linda"
-analyzer = Analyzer(user_name)
+username = "Linda"
 
 
 @app.route('/')
@@ -37,14 +37,16 @@ def index():
 
 @app.route('/create')
 def create():
+    analyzer = Analyzer(username)
     analyzer.create()
     return "Created Person Group."
 
 
 @app.route('/train')
 def train():
+    analyzer = Analyzer(username)
     # Train with the videos upload
-    get_frames(user_name, "./media/videos/linda-real.mp4")
+    get_frames(username, "./media/videos/linda-real.mp4")
     # Detect faces from the frames and add to Person Group
     analyzer.get_train_data()
     # Use the frames in the person group to train
@@ -54,8 +56,15 @@ def train():
 
 @app.route('/delete')
 def delete():
+    analyzer = Analyzer(username)
     analyzer.delete()
     return "Deleted Person Group."
+
+
+@app.route('/clear')
+def clear():
+    clear_frames(username)
+    return "Clear all frames in folder 'data'"
 
 
 def allowed_file(filename):
@@ -65,30 +74,35 @@ def allowed_file(filename):
 
 @app.route('/upload', methods=['GET', 'POST'])
 def file_upload():
-    # print('DEBUG: uploading file...')
+    print('DEBUG: uploading file...')
     if request.method == 'POST':
-        #username
+        result = {}
+        # Check username existence
         if 'username' not in request.form:
             flash("No username")
-            return redirect(request.url)
-        user_name = request.form['username']
-        # print("username ", user_name)
+            result['result'] = 'False'
+            return jsonify(result)
+        username = request.form['username']
+        clear_frames(username)
+        print("DEBUG: username = ", username)
         # Check file existence
         if 'file' not in request.files:
             flash('No file part')
-            return redirect(request.url)
+            result['result'] = 'False'
+            return jsonify(result)
         file = request.files['file']
         if file.filename == '':
             flash('No selected file')
-            return redirect(request.url)
+            result['result'] = 'False'
+            return jsonify(result)
         # print('DEBUG: filename = ', file.filename)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # print('DEBUG: file saved!', filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            analyzer = Analyzer(user_name)
-            get_frames(user_name, path)
+            get_frames(username, path)
+            analyzer = Analyzer(username)
             # analyzer.delete()
             # print('DEBUG: Delete Done')
             # analyzer.create()
@@ -96,13 +110,15 @@ def file_upload():
             # analyzer.train()
             confidence = analyzer.identify()
             is_lively = analyzer.detect_liveness(path)
-
-            result = {}
-            if confidence > THRESHOLD and is_lively:
+            is_me = False
+            if confidence > THRESHOLD:
+                is_me = True
+            if is_me and is_lively:
                 result['result'] = 'True'
             else:
                 result['result'] = 'False'
-            print('DEBUG: detection result: ', result['result'])
+            print('DEBUG: Detect Result - is_lively = ', is_lively)
+            print('DEBUG: Detect Result - is_me = ', is_me)
             return jsonify(result)
             # return redirect(request.url)
 

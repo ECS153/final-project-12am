@@ -24,15 +24,16 @@ TRAIN_DATA_NUM = 8
 
 
 class Analyzer:
-    def __init__(self, name):
+    def __init__(self, username):
         # Create an authenticated FaceClient.
         self.face_client = FaceClient(ENDPOINT, CognitiveServicesCredentials(KEY))
         # Initialize testing/training data
-        self.videos_frames = [file for file in glob.glob('./data/' + name + '/*.jpg')]
-        self.videos_frames = random.sample(self.videos_frames, k=TRAIN_DATA_NUM)
-        self.person_group_id = name.lower()  # must be lower case, alphanumeric, and/or with '-', '_'.
-        self.person_id = name.lower()
-        self.name = name
+        self.videos_frames = [file for file in glob.glob('./data/' + username + '/*.jpg')]
+        if len(self.videos_frames) > TRAIN_DATA_NUM:
+            self.videos_frames = random.sample(self.videos_frames, k=TRAIN_DATA_NUM)
+        self.person_group_id = username.lower()  # must be lower case, alphanumeric, and/or with '-', '_'.
+        self.person_id = username.lower()
+        self.name = username
 
     def create(self):
         """
@@ -86,6 +87,9 @@ class Analyzer:
         """
         confidence_sum = 0
         valid_num = 0
+        if len(self.videos_frames) == 0:
+            print('DEBUG: no video frame to identify')
+            return 0
         for img in self.videos_frames:
             # Detect faces
             face_ids = self.detect(img)
@@ -98,6 +102,7 @@ class Analyzer:
             confidence_list = [] # initial val in case confidence_list is empty
             for person in results:
                 if person.candidates:
+                    print('DEBUG: confidence = ', person.candidates[0].confidence)
                     confidence_list.append(person.candidates[0].confidence)
             if confidence_list:
                 confidence = max(confidence_list)
@@ -107,7 +112,7 @@ class Analyzer:
             average_confidence = 0
         else:
             average_confidence = confidence_sum / valid_num
-        print('Confidence level that the person in the video is me:', average_confidence)
+        # print('Confidence level that the person in the video is me:', average_confidence)
         return average_confidence
 
     def delete(self):
@@ -146,7 +151,6 @@ class Analyzer:
     def detect_liveness(path):
         # print("DEBUG: detecting livenese of file, ", path)
         res = detect_liveness(path)
-        print("DEBUG: liveness result = ", res)
         if res:
             return True
         return False
