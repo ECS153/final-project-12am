@@ -1,31 +1,28 @@
 import cv2
-import os
+import os, shutil
 
 
-def get_frames(user_name, path):
+def get_frames(username, path):
     """
         Get frames from .mp4 file
         sources: https://www.geeksforgeeks.org/extract-images-from-video-in-python/
     """
-
     # The fps of .MOV is around 5 times of the fps of .mp4
     cam = cv2.VideoCapture(path)
-
     # Create dir for frames
     try:
-        if not os.path.exists('data'):
-            os.makedirs('data')
+        if not os.path.exists('data/' + username):
+            os.makedirs('data/' + username)
     except OSError:
         print('Error: Creating directory of data')
-
     currentframe = 0
     while True:
         ret, frame = cam.read()
         if ret:
             if currentframe % 10 == 0:
-                file_name = './data/' + user_name + '/frame' + str(round(currentframe / 10)) + '.jpg'
-                print('Creating...' + file_name)
-                cv2.imwrite(file_name, frame)
+                filename = './data/' + username + '/frame' + str(round(currentframe / 10)) + '.jpg'
+                # print('Creating...' + file_name)
+                cv2.imwrite(filename, frame)
             currentframe += 1
         else:
             break
@@ -35,5 +32,15 @@ def get_frames(user_name, path):
     cv2.destroyAllWindows()
 
 
-def delete_frames():
-    pass
+def clear_frames(username):
+    folder = 'data/' + username
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        # print("DEBUG: file path = ", file_path)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))

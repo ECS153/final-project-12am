@@ -5,6 +5,8 @@
 from imutils.video import VideoStream
 from keras.preprocessing.image import img_to_array
 from keras.models import load_model
+# from keras.models import load_model
+from tensorflow.keras.models import load_model
 import numpy as np
 import imutils
 import pickle
@@ -14,6 +16,7 @@ import os
 
 confidence_threshhold = 0.5
 liveness_threshold = 0.9
+
 
 def check_liveness(vs, net, model, le):
     # variables used to find the confidence in liveness
@@ -32,7 +35,7 @@ def check_liveness(vs, net, model, le):
         # grab the frame dimensions and convert it to a blob
         (h, w) = frame.shape[:2]
         blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0,
-            (300, 300), (104.0, 177.0, 123.0))
+                                     (300, 300), (104.0, 177.0, 123.0))
 
         # pass the blob through the network and obtain the detections and
         # predictions
@@ -72,16 +75,16 @@ def check_liveness(vs, net, model, le):
                 j = np.argmax(preds)
                 label = le.classes_[j]
 
-                #print("prediciton: ", preds, "confidence: ", confidence) #Debug 
+                # print("prediciton: ", preds, "confidence: ", confidence) #Debug
                 if label == 'real':
-                    real += 1
+                    real += 1 * confidence
                 total += 1
                 # draw the label and bounding box on the frame
                 label = "{}: {:.4f}".format(label, preds[j])
                 cv2.putText(frame, label, (startX, startY - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
                 cv2.rectangle(frame, (startX, startY), (endX, endY),
-                    (0, 0, 255), 2)
+                              (0, 0, 255), 2)
 
         # show the output frame and wait for a key press
         '''
@@ -94,14 +97,15 @@ def check_liveness(vs, net, model, le):
             break
         '''
 
-    return float(real)/total
+    return float(real) / total
+
 
 def detect_liveness(path):
     # load our serialized face detector from disk
     print("[INFO] loading face detector...")
-    protoPath = os.path.sep.join(["liveness","face_detector", "deploy.prototxt"])
-    modelPath = os.path.sep.join(["liveness","face_detector",
-        "res10_300x300_ssd_iter_140000.caffemodel"])
+    protoPath = os.path.sep.join(["liveness", "face_detector", "deploy.prototxt"])
+    modelPath = os.path.sep.join(["liveness", "face_detector",
+                                  "res10_300x300_ssd_iter_140000.caffemodel"])
 
     net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
@@ -112,8 +116,8 @@ def detect_liveness(path):
 
     # initialize the video stream and allow the camera sensor to warmup
     print("[INFO] starting video stream...")
-    vs = cv2.VideoCapture(path) #TODO: Changed to path to video
-    #time.sleep(2.0)
+    vs = cv2.VideoCapture(path)  # TODO: Changed to path to video
+    # time.sleep(2.0)
 
     res = check_liveness(vs, net, model, le)
 
