@@ -7,6 +7,7 @@ def get_frames(username, path):
         Get frames from .mp4 file
         sources: https://www.geeksforgeeks.org/extract-images-from-video-in-python/
     """
+    username = username.lower()
     # The fps of .MOV is around 5 times of the fps of .mp4
     cam = cv2.VideoCapture(path)
     # Create dir for frames

@@ -27,7 +27,7 @@ ALLOWED_EXTENSIONS = {'mov', 'mp4'}
 THRESHOLD = 0.50
 
 '''To be commented out when Huyen implemented her stuff'''
-username = "Linda"
+username = "Kenny"
 
 
 @app.route('/')
@@ -46,7 +46,7 @@ def create():
 def train():
     analyzer = Analyzer(username)
     # Train with the videos upload
-    get_frames(username, "./media/videos/linda-real.mp4")
+    get_frames(username, "./media/video/kenny-real.mp4")
     # Detect faces from the frames and add to Person Group
     analyzer.get_train_data()
     # Use the frames in the person group to train
