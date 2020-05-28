@@ -65,14 +65,14 @@ def allowed_file(filename):
 
 @app.route('/upload', methods=['GET', 'POST'])
 def file_upload():
-    print('DEBUG: uploading file...')
+    # print('DEBUG: uploading file...')
     if request.method == 'POST':
         #username
         if 'username' not in request.form:
             flash("No username")
             return redirect(request.url)
         user_name = request.form['username']
-        print("username ", user_name)
+        # print("username ", user_name)
         # Check file existence
         if 'file' not in request.files:
             flash('No file part')
@@ -81,11 +81,11 @@ def file_upload():
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
-        print('DEBUG: filename = ', file.filename)
+        # print('DEBUG: filename = ', file.filename)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            print('DEBUG: file saved!', filename)
+            # print('DEBUG: file saved!', filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             analyzer = Analyzer(user_name)
             get_frames(user_name, path)

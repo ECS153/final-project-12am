@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Button, TextInput } from 'react-native';
-import { Camera } from 'expo-camera';
+import { Camera,Permissions } from 'expo-camera';
 
 function createResultAlert(alertTitle, alertMsg) {
   Alert.alert(
@@ -86,6 +86,7 @@ function Cam({route}) {
           }}></Camera>
           <TouchableOpacity style={recording ? styles.recorderButtonStarted : styles.recorderButton}
           onPress={async() => {
+              console.log('OnPress')
               setRecording(true);
               const video = await cameraRef.recordAsync(camera_options);
               console.log('video', video);
@@ -111,7 +112,7 @@ function uploadInfo(username, video) {
    });
    formData.append('username', username);
    
-   fetch('https://flask-server12am.herokuapp.com/upload', {
+   fetch('https://161f41194f12.ngrok.io/upload', {
      method: 'POST',
      body: formData
    }).then((res) => {
@@ -200,7 +201,9 @@ const styles = StyleSheet.create({
   },
   title: {
     padding: 60,
-    fontSize: 70,
+    paddingTop: 30,
+    paddingBottom:30,
+    fontSize: 60,
   },
   recorderButton: {
     marginTop: 15,

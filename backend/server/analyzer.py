@@ -56,8 +56,8 @@ class Analyzer:
     def get_train_data(self):
         # Detect faces and register to correct person
         me = self.face_client.person_group_person.create(self.person_group_id, self.person_id)
-        print("DEBUG: Person created: ", self.person_group_id, "person ID: ",self.person_id)
-        print("MY ID: ",me.person_id)
+        # print("DEBUG: Person created: ", self.person_group_id, "person ID: ",self.person_id)
+        # print("MY ID: ",me.person_id)
         for image in self.videos_frames:
             image_fd = open(image, 'r+b')
             if self.detect(image):
@@ -93,7 +93,7 @@ class Analyzer:
                 continue
 
             # Identify faces
-            print("DEBUG: person group ID Identify",self.person_group_id)
+            # print("DEBUG: person group ID Identify",self.person_group_id)
             results = self.face_client.face.identify(face_ids, self.person_group_id)
             confidence_list = [] # initial val in case confidence_list is empty
             for person in results:
@@ -131,7 +131,7 @@ class Analyzer:
         source_image_id = detected_faces[0].face_id
         detected_faces = self.detect('./data/' + target_image)
         target_faces_id = detected_faces[0].face_id
-        print('{} face(s) detected from image {}.'.format(len(detected_faces), source_image))
+        # print('{} face(s) detected from image {}.'.format(len(detected_faces), source_image))
 
         # Verification for faces of the same person
         verify_result_same = self.face_client.face.verify_face_to_face(source_image_id, target_faces_id)
@@ -144,7 +144,7 @@ class Analyzer:
 
     @staticmethod
     def detect_liveness(path):
-        print("DEBUG: detecting livenese of file, ", path)
+        # print("DEBUG: detecting livenese of file, ", path)
         res = detect_liveness(path)
         print("DEBUG: liveness result = ", res)
         if res:

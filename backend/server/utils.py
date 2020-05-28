@@ -24,7 +24,7 @@ def get_frames(user_name, path):
         if ret:
             if currentframe % 10 == 0:
                 file_name = './data/' + user_name + '/frame' + str(round(currentframe / 10)) + '.jpg'
-                print('Creating...' + file_name)
+                # print('Creating...' + file_name)
                 cv2.imwrite(file_name, frame)
             currentframe += 1
         else:
