@@ -6,7 +6,7 @@ from imutils.video import VideoStream
 from keras.preprocessing.image import img_to_array
 from keras.models import load_model
 # from keras.models import load_model
-from tensorflow.keras.models import load_model
+# from tensorflow.keras.models import load_model
 import numpy as np
 import imutils
 import pickle
@@ -65,7 +65,9 @@ def check_liveness(vs, net, model, le):
                 # extract the face ROI and then preproces it in the exact
                 # same manner as our training data
                 face = frame[startY:endY, startX:endX]
-                face = cv2.resize(face, (32, 32))
+                # print(face)
+                if len(face) > 32 and len(face[0]) > 32:
+                    face = cv2.resize(face, (32, 32))
                 face = face.astype("float") / 255.0
                 face = img_to_array(face)
                 face = np.expand_dims(face, axis=0)
@@ -96,7 +98,8 @@ def check_liveness(vs, net, model, le):
         if key == ord("q"):
             break
         '''
-
+    if total == 0:
+        return 0
     return float(real) / total
 
 

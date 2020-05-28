@@ -107,6 +107,7 @@ class Analyzer:
             if confidence_list:
                 confidence = max(confidence_list)
                 valid_num += 1
+                print("DEBUG: Confidence: ", confidence)
                 confidence_sum += confidence
         if confidence_sum == 0:
             average_confidence = 0

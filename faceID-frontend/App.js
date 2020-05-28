@@ -58,7 +58,7 @@ function Cam({route}) {
   const [cameraRef, setCameraRef] = useState(null);
   const camera_options = {
     mute: true,
-    maxDuration: 1,
+    maxDuration: 5,
   };
   
 
