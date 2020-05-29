@@ -44,9 +44,10 @@ def create():
 
 @app.route('/train')
 def train():
-    analyzer = Analyzer(user_name)
+
     # Train with the videos upload
     get_frames(user_name, "./media/video/kenny-real.mp4")
+    analyzer = Analyzer(user_name)
     # Detect faces from the frames and add to Person Group
     analyzer.get_train_data()
     # Use the frames in the person group to train
