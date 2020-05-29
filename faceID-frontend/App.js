@@ -108,7 +108,7 @@ function uploadInfo(username, video) {
    var formData = new FormData();
    formData.append('file', {
      uri: video.uri,
-     name: Date.now().toString() + ".mov"
+     name: Date.now().toString() + ".mp4"
    });
    formData.append('username', username);
    

@@ -21,8 +21,8 @@ def get_frames(username, path):
         ret, frame = cam.read()
         if ret:
             if currentframe % 10 == 0:
-
                 filename = './data/' + username + '/frame' + str(round(currentframe / 10)) + '.jpg'
+                print("Filename: ", filename)
                 # print('Creating...' + file_name)
                 cv2.imwrite(filename, frame)
             currentframe += 1
