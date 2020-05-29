@@ -42,16 +42,26 @@ def create():
     return "Created Person Group."
 
 
+trainer = Analyzer(user_name)
+
+
+@app.route('/init')
+def init_train():
+    trainer.get_train_data()
+    return "Get Trained Data ."
+
+
 @app.route('/train')
 def train():
 
+    # trainer = Analyzer(username)
     # Train with the videos upload
-    get_frames(user_name, "./media/video/kenny-real.mp4")
-    analyzer = Analyzer(user_name)
+    # get_frames(username, "./media/video/kenny-real.mp4")
+
     # Detect faces from the frames and add to Person Group
-    analyzer.get_train_data()
+    # trainer.get_train_data()
     # Use the frames in the person group to train
-    analyzer.train()
+    trainer.train()
     return "Trained Person Group."
 
 
@@ -84,7 +94,6 @@ def file_upload():
             result['result'] = 'False'
             return jsonify(result)
         username = request.form['username']
-        clear_frames(username)
         print("DEBUG: username = ", username)
         # Check file existence
         if 'file' not in request.files:
@@ -102,17 +111,17 @@ def file_upload():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # print('DEBUG: file saved!', filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            clear_frames(username)
             get_frames(username, path)
-            analyzer = Analyzer(username)
+            tester = Analyzer(username)
             # analyzer.delete()
             # print('DEBUG: Delete Done')
             # analyzer.create()
             # print('DEBUG: Create Done')
             # analyzer.train()
-            confidence = analyzer.identify()
-            is_lively = analyzer.detect_liveness(path)
             is_me = False
-            if confidence > THRESHOLD:
+            is_lively = tester.detect_liveness(path)
+            if tester.identify() > THRESHOLD:
                 is_me = True
             if is_me and is_lively:
                 result['result'] = 'True'
