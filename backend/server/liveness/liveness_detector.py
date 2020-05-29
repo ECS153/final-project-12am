@@ -28,6 +28,8 @@ def check_liveness(vs, net, model, le):
         # grab the frame from the threaded video stream and resize it
         # to have a maximum width of 600 pixels
         res, frame = vs.read()
+        rotateCode = cv2.ROTATE_90_CLOCKWISE
+        frame = cv2.rotate(frame, rotateCode)
         if not res:
             break
         frame = imutils.resize(frame, width=600)
@@ -92,15 +94,18 @@ def check_liveness(vs, net, model, le):
 
         # show the output frame and wait for a key press
         
-        '''
+
         #Debug
+        print("Debug: Liveness_dector Image show")
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
         # if the `q` key was pressed, break from the loop
         if key == ord("q"):
             break
-        '''
-        
+    print("Debug: real:", real)
+    print("Debug: toal:",total)
+
+
     return float(real) / total if total > 0 else 0
 
 
@@ -142,5 +147,5 @@ def detect_liveness(path):
     # do a bit of cleanup
     cv2.destroyAllWindows()
     vs.release()
-
+    print("Debug: Res: ", res)
     return res >= liveness_threshold

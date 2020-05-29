@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Button, TextInput } from 'react-native';
-import { Camera,Permissions } from 'expo-camera';
+import { Camera, Permissions } from 'expo-camera';
 
 function createResultAlert(alertTitle, alertMsg) {
   Alert.alert(
@@ -108,7 +108,7 @@ function uploadInfo(username, video) {
    var formData = new FormData();
    formData.append('file', {
      uri: video.uri,
-     name: Date.now().toString() + ".mp4"
+     name: Date.now().toString() + ".mov"
    });
    formData.append('username', username);
    

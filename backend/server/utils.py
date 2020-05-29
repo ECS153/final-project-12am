@@ -22,7 +22,8 @@ def get_frames(username, path):
         ret, frame = cam.read()
         if ret:
             if currentframe % 10 == 0:
-
+                rotateCode = cv2.ROTATE_90_CLOCKWISE
+                frame = cv2.rotate(frame, rotateCode)
                 filename = './' + folder + '/frame' + str(round(currentframe / 10)) + '.jpg'
                 print(filename)
                 cv2.imwrite(filename, frame)
