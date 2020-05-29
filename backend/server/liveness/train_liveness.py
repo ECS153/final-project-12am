@@ -37,7 +37,7 @@ args = vars(ap.parse_args())
 # epochs to train for
 INIT_LR = 1e-4
 BS = 8
-EPOCHS = 50
+EPOCHS = 100
 
 # grab the list of images in our dataset directory, then initialize
 # the list of data (i.e., images) and class images
