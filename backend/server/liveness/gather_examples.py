@@ -41,6 +41,9 @@ while True:
 	# grab the frame from the file
 	(grabbed, frame) = vs.read()
 
+	rotateCode = cv2.ROTATE_90_CLOCKWISE
+	frame = cv2.rotate(frame, rotateCode)
+
 	# if the frame was not grabbed, then we have reached the end
 	# of the stream
 	if not grabbed:
