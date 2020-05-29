@@ -63,6 +63,7 @@ class Analyzer:
         print("DEBUG: person, id = ", self.name, me.person_id)
         for image in self.videos_frames:
             image_fd = open(image, 'r+b')
+            # print("Img Size: ", image_fd.size)
             if self.detect(image):
                 self.face_client.person_group_person.add_face_from_stream(self.person_group_id, me.person_id, image_fd)
             else:
@@ -93,6 +94,7 @@ class Analyzer:
             return 0
         for img in self.videos_frames:
             # Detect faces
+
             face_ids = self.detect(img)
             if not face_ids:
                 continue
@@ -110,6 +112,7 @@ class Analyzer:
             if confidence_list:
                 confidence = max(confidence_list)
                 valid_num += 1
+                print("DEBUG: Confidence: ", confidence)
                 confidence_sum += confidence
         if confidence_sum == 0:
             average_confidence = 0
@@ -139,7 +142,7 @@ class Analyzer:
         source_image_id = detected_faces[0].face_id
         detected_faces = self.detect('./data/' + target_image)
         target_faces_id = detected_faces[0].face_id
-        print('{} face(s) detected from image {}.'.format(len(detected_faces), source_image))
+        # print('{} face(s) detected from image {}.'.format(len(detected_faces), source_image))
 
         # Verification for faces of the same person
         verify_result_same = self.face_client.face.verify_face_to_face(source_image_id, target_faces_id)

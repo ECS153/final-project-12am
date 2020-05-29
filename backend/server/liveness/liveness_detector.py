@@ -6,7 +6,7 @@ from imutils.video import VideoStream
 from keras.preprocessing.image import img_to_array
 from keras.models import load_model
 # from keras.models import load_model
-from tensorflow.keras.models import load_model
+# from tensorflow.keras.models import load_model
 import numpy as np
 import imutils
 import pickle
@@ -41,7 +41,6 @@ def check_liveness(vs, net, model, le):
         # predictions
         net.setInput(blob)
         detections = net.forward()
-
         # loop over the detections
         for i in range(0, detections.shape[2]):
             # extract the confidence (i.e., probability) associated with the
@@ -65,7 +64,9 @@ def check_liveness(vs, net, model, le):
                 # extract the face ROI and then preproces it in the exact
                 # same manner as our training data
                 face = frame[startY:endY, startX:endX]
-                face = cv2.resize(face, (32, 32))
+                # print(face)
+                if len(face) > 32 and len(face[0]) > 32:
+                    face = cv2.resize(face, (32, 32))
                 face = face.astype("float") / 255.0
                 face = img_to_array(face)
                 face = np.expand_dims(face, axis=0)
@@ -75,44 +76,62 @@ def check_liveness(vs, net, model, le):
                 j = np.argmax(preds)
                 label = le.classes_[j]
 
-                # print("prediciton: ", preds, "confidence: ", confidence) #Debug
+                #print("prediciton: ", preds, "confidence: ", confidence, 'label: ', label) #Debug
+                
                 if label == 'real':
                     real += 1 * confidence
                 total += 1
+
+                
                 # draw the label and bounding box on the frame
                 label = "{}: {:.4f}".format(label, preds[j])
                 cv2.putText(frame, label, (startX, startY - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
                 cv2.rectangle(frame, (startX, startY), (endX, endY),
                               (0, 0, 255), 2)
+                
 
         # show the output frame and wait for a key press
+        
         '''
         #Debug
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
-        print('here3')
         # if the `q` key was pressed, break from the loop
         if key == ord("q"):
             break
         '''
-
-    return float(real) / total
+        
+    return float(real) / total if total > 0 else 0
 
 
 def detect_liveness(path):
     # load our serialized face detector from disk
     print("[INFO] loading face detector...")
+    
     protoPath = os.path.sep.join(["liveness", "face_detector", "deploy.prototxt"])
     modelPath = os.path.sep.join(["liveness", "face_detector",
                                   "res10_300x300_ssd_iter_140000.caffemodel"])
+    '''
+    #Direct testing
+    protoPath = os.path.sep.join(["face_detector", "deploy.prototxt"])
+    modelPath = os.path.sep.join(["face_detector",
+                                  "res10_300x300_ssd_iter_140000.caffemodel"])
+    '''
+
 
     net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
     # load the liveness detector model and label encoder from disk
     print("[INFO] loading liveness detector...")
+    
     model = load_model("./liveness/liveness.model")
     le = pickle.loads(open("./liveness/le.pickle", "rb").read())
+    '''
+    #Direct testing
+    model = load_model("liveness.model")
+    le = pickle.loads(open("le.pickle", "rb").read())
+    '''
 
     # initialize the video stream and allow the camera sensor to warmup
     print("[INFO] starting video stream...")

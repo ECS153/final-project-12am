@@ -27,7 +27,7 @@ ALLOWED_EXTENSIONS = {'mov', 'mp4'}
 THRESHOLD = 0.50
 
 '''To be commented out when Huyen implemented her stuff'''
-username = "Kenny"
+user_name = "Kenny"
 
 
 @app.route('/')
@@ -37,12 +37,12 @@ def index():
 
 @app.route('/create')
 def create():
-    analyzer = Analyzer(username)
+    analyzer = Analyzer(user_name)
     analyzer.create()
     return "Created Person Group."
 
 
-trainer = Analyzer(username)
+trainer = Analyzer(user_name)
 
 
 @app.route('/init')
@@ -65,14 +65,14 @@ def train():
 
 @app.route('/delete')
 def delete():
-    analyzer = Analyzer(username)
+    analyzer = Analyzer(user_name)
     analyzer.delete()
     return "Deleted Person Group."
 
 
 @app.route('/clear')
 def clear():
-    clear_frames(username)
+    clear_frames(user_name)
     return "Clear all frames in folder 'data'"
 
 
@@ -83,22 +83,26 @@ def allowed_file(filename):
 
 @app.route('/upload', methods=['GET', 'POST'])
 def file_upload():
-    # print('DEBUG: uploading file...')
+    print('DEBUG: uploading file...')
     if request.method == 'POST':
+        result = {}
         # Check username existence
         if 'username' not in request.form:
             flash("No username")
-            return redirect(request.url)
+            result['result'] = 'False'
+            return jsonify(result)
         username = request.form['username']
         print("DEBUG: username = ", username)
         # Check file existence
         if 'file' not in request.files:
             flash('No file part')
-            return redirect(request.url)
+            result['result'] = 'False'
+            return jsonify(result)
         file = request.files['file']
         if file.filename == '':
             flash('No selected file')
-            return redirect(request.url)
+            result['result'] = 'False'
+            return jsonify(result)
         # print('DEBUG: filename = ', file.filename)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -117,7 +121,6 @@ def file_upload():
             is_lively = tester.detect_liveness(path)
             if tester.identify() > THRESHOLD:
                 is_me = True
-            result = {}
             if is_me and is_lively:
                 result['result'] = 'True'
             else:
