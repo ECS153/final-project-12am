@@ -8,12 +8,13 @@ def get_frames(username, path):
         sources: https://www.geeksforgeeks.org/extract-images-from-video-in-python/
     """
     username = username.lower()
+    folder = 'data/' + username
     # The fps of .MOV is around 5 times of the fps of .mp4
     cam = cv2.VideoCapture(path)
     # Create dir for frames
     try:
-        if not os.path.exists('data/' + username):
-            os.makedirs('data/' + username)
+        if not os.path.exists(folder):
+            os.makedirs(folder)
     except OSError:
         print('Error: Creating directory of data')
     currentframe = 0
@@ -21,7 +22,7 @@ def get_frames(username, path):
         ret, frame = cam.read()
         if ret:
             if currentframe % 10 == 0:
-                filename = './data/' + username + '/frame' + str(round(currentframe / 10)) + '.jpg'
+                filename = './' + folder + '/frame' + str(round(currentframe / 10)) + '.jpg'
                 # print('Creating...' + file_name)
                 cv2.imwrite(filename, frame)
             currentframe += 1

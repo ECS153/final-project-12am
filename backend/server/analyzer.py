@@ -20,26 +20,26 @@ os.environ['FACE_ENDPOINT'] = 'https://mycsresourceface.cognitiveservices.azure.
 
 KEY = os.environ['FACE_SUBSCRIPTION_KEY']
 ENDPOINT = os.environ['FACE_ENDPOINT']
-TRAIN_DATA_NUM = 8
+TRAIN_DATA_NUM = 5
 
 
 class Analyzer:
     def __init__(self, username):
+        self.name = username.lower()
         # Create an authenticated FaceClient.
         self.face_client = FaceClient(ENDPOINT, CognitiveServicesCredentials(KEY))
         # Initialize testing/training data
-        self.videos_frames = [file for file in glob.glob('./data/' + username + '/*.jpg')]
+        self.videos_frames = [file for file in glob.glob('./data/' + self.name + '/*.jpg')]
         if len(self.videos_frames) > TRAIN_DATA_NUM:
             self.videos_frames = random.sample(self.videos_frames, k=TRAIN_DATA_NUM)
-        self.person_group_id = username.lower()  # must be lower case, alphanumeric, and/or with '-', '_'.
-        self.person_id = username.lower()
-        self.name = username
+        self.person_group_id = self.name  # must be lower case, alphanumeric, and/or with '-', '_'.
+        self.person_id = self.name
 
     def create(self):
         """
         Create a PersonGroup and a Person.
         """
-        print("DEBUG: Person created: ",self.person_group_id)
+        print("DEBUG: Person created: ", self.person_group_id)
         self.face_client.person_group.create(person_group_id=self.person_group_id, name=self.person_group_id)
 
     def detect(self, image):
@@ -55,14 +55,15 @@ class Analyzer:
         return face_ids
 
     def get_train_data(self):
-        # Detect faces and register to correct person
+        """
+        Detect faces and register to correct person
+        """
         me = self.face_client.person_group_person.create(self.person_group_id, self.person_id)
-        print("DEBUG: Person created: ", self.person_group_id, "person ID: ",self.person_id)
-        print("MY ID: ",me.person_id)
+        print("DEBUG: Person created: ", self.person_group_id, "person ID: ", self.person_id)
+        print("DEBUG: person, id = ", self.name, me.person_id)
         for image in self.videos_frames:
             image_fd = open(image, 'r+b')
             if self.detect(image):
-                # print("person_ID:",me.person_id)
                 self.face_client.person_group_person.add_face_from_stream(self.person_group_id, me.person_id, image_fd)
             else:
                 print(image, "no face detected")
@@ -97,13 +98,15 @@ class Analyzer:
                 continue
 
             # Identify faces
-            # print("DEBUG: person group ID Identify",self.person_group_id)
             results = self.face_client.face.identify(face_ids, self.person_group_id)
-            confidence_list = [] # initial val in case confidence_list is empty
+            print('DEBUG: identify_result_count = ', len(results))
+            confidence_list = []  # initial val in case confidence_list is empty
             for person in results:
                 if person.candidates:
                     print('DEBUG: confidence = ', person.candidates[0].confidence)
                     confidence_list.append(person.candidates[0].confidence)
+                else:
+                    print('DEBUG: no candidate')
             if confidence_list:
                 confidence = max(confidence_list)
                 valid_num += 1
