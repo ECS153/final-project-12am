@@ -19,19 +19,19 @@ final-project-12am /
   |- milestones.md
   |- design_docs.md
   |- final-presentation-12am.mp4
-  |- faceID-frontend
+  |- faceID-frontend /
     |- App.js
     |- ... 
-  |- backend	
-    |- server
-      |- media
+  |- backend /
+    |- server /
+      |- media /
           |- images
           |- videos
-      |- data
-        |- Kenny
+      |- data /
+        |- Kenny /
           |- frame1.jpg
           |- ...
-      |- liveness
+      |- liveness /
           |- liveness_detector.py
           |- ...
       |- detector.py
