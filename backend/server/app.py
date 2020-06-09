@@ -25,8 +25,6 @@ os.environ['FLASK_ENV'] = 'development'
 app.config["UPLOAD_FOLDER"] = './media/video'
 ALLOWED_EXTENSIONS = {'mov', 'mp4'}
 THRESHOLD = 0.50
-
-'''To be commented out when Huyen implemented her stuff'''
 user_name = "Kenny"
 
 
@@ -53,14 +51,6 @@ def init_train():
 
 @app.route('/train')
 def train():
-
-    # trainer = Analyzer(username)
-    # Train with the videos upload
-    # get_frames(username, "./media/video/kenny-real.mp4")
-
-    # Detect faces from the frames and add to Person Group
-    # trainer.get_train_data()
-    # Use the frames in the person group to train
     trainer.train()
     return "Trained Person Group."
 
@@ -105,20 +95,13 @@ def file_upload():
             flash('No selected file')
             result['result'] = 'False'
             return jsonify(result)
-        # print('DEBUG: filename = ', file.filename)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # print('DEBUG: file saved!', filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             clear_frames(username)
             get_frames(username, path)
             tester = Analyzer(username)
-            # analyzer.delete()
-            # print('DEBUG: Delete Done')
-            # analyzer.create()
-            # print('DEBUG: Create Done')
-            # analyzer.train()
             is_me = False
             is_lively = tester.detect_liveness(path)
             if tester.identify() > THRESHOLD:
@@ -127,8 +110,6 @@ def file_upload():
                 result['result'] = 'True'
             else:
                 result['result'] = 'False'
-            print('DEBUG: Detect Result - is_lively = ', is_lively)
-            print('DEBUG: Detect Result - is_me = ', is_me)
             return jsonify(result)
             # return redirect(request.url)
 
