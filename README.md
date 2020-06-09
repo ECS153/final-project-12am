@@ -94,7 +94,8 @@ To test the project, follow the instructions for fronend/backend repspectively t
     
     1. Training: 
         - Create or Delete a Person Group: go to `[LOCAL_HOST]/create` or `[LOCAL_HOST]/delete`
-        - Train a person data in folder `./backend/server/data/[NAME]`: go to `[LOCAL_HOST]/train`
+        - Init traning data in folder `./backend/server/data/[NAME]`: go to `[LOCAL_HOST]/init`
+        - Train inited person data: go to `[LOCAL_HOST]/train`
         
     2. Testing: 
         - Go to `[LOCAL_HOST]`, type the owner name of the trained data and upload a video from desktop 
