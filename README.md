@@ -3,13 +3,17 @@ A simple login authentication interface for iOS/Android app which recognizes and
 
 ## Table of contents
 * [General Info](#general-info)
-* [Setup](#setup)
+* [Technologies](#technologies)
 * [Repo Structure](#repo-structure)
 * [Code Structure](#code-structure)
+* [Setup](#setup)
 * [Significance and Result](#significance-and-result)
 
 ## General Info 
 This is a project created by Team12AM, Huyen Pham, Linda Li, Tim Van and Liyin Li. It contains two main components. An frontend app which uses REACT Native and a Flask server as backend which encapsulates two detection models (Facial Recognition and Liveness Detection). User can test the project through running the Expo app on iOS/Android phone or running the flask app on desktop.
+
+## Technologies
+React Native, Expo, Flask, Microsoft Azure, OpenCV, Heroku
 
 ## Repo Structure
 ```
