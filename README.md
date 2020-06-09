@@ -1,4 +1,4 @@
-# Lively: Facial Liveness Dectection and Recognition
+# Lively: Facial Liveness Detection and Recognition
 A simple login authentication interface for iOS/Android app which recognizes and detects facial liveness of an user.
 
 ## Table of contents
@@ -48,7 +48,7 @@ final-project-12am /
 ## Setup and Testing
 To test the project, follow the instructions for fronend/backend repspectively to setup.
 
-### For front end:
+### Frontend
 
   - Run Expo to test on iOS/Android device
   
@@ -59,9 +59,9 @@ To test the project, follow the instructions for fronend/backend repspectively t
         - For iOS, open your camera, scan the code from expo bundle on your web browser, then open Expo.
         - For Android, scan the code with the barcode scanner within the Expo Client app.
 
-### For backend:
+### Backend
 
-  - Run Flsk api the two detection components to test on desktop
+  - Run Flask api the two detection components to test on desktop
   
     1. Set up virtual environment LOCALLY (one dir above the whole project dir)
         - run `python -m venv venv`
@@ -86,7 +86,7 @@ To test the project, follow the instructions for fronend/backend repspectively t
         - run `pip install <LIB> --upgrade`
         - or run `pip install --upgrade pip`
         
-  - Now we can testing different functionality: 
+  - Now we can test different functionalities
     
     1. Training: 
         - Create or Delete a Person Group: go to `[LOCAL_HOST]/create` or `[LOCAL_HOST]/delete`
