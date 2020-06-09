@@ -99,7 +99,7 @@ To test the project, follow the instructions for fronend/backend repspectively t
         - run `pip install <LIB> --upgrade`
         - or run `pip install --upgrade pip`
         
-  - Training/Testing on Flask API
+  - Training/Testing on Flask API (while the server is running)
     
     1. Training: 
         - Create or Delete a Person Group: go to `[LOCAL_HOST]/create` or `[LOCAL_HOST]/delete`
@@ -107,7 +107,7 @@ To test the project, follow the instructions for fronend/backend repspectively t
         - Train inited person data: go to `[LOCAL_HOST]/train`
         
     2. Testing: 
-        - Go to `[LOCAL_HOST]`, type the owner name of the trained data and upload a video from desktop 
+        - Go to `[LOCAL_HOST]/upload`, type the owner name of the trained data and upload a video from desktop 
         - Run the liveness and facial reocognition APIs by naviagting to `[LOCAL_HOST]/detect`
         - Check the browser for the detection result
         - "True" means the video is lively and the faces detected belong to the authenticated user
