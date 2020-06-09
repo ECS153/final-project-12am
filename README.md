@@ -6,7 +6,7 @@ A simple login authentication interface for iOS/Android app which recognizes and
 * [Technologies](#technologies)
 * [Repo Structure](#repo-structure)
 * [Code Structure](#code-structure)
-* [Setup](#setup)
+* [Setup and Testing](#setup-and0-testing)
 * [Significance and Result](#significance-and-result)
 
 ## General Info 
@@ -57,15 +57,24 @@ To test the project, follow the instructions for fronend/backend repspectively t
   - Run Expo to test on iOS/Android device
   
     1. Install locally using npm
-        - go to directory `final-project-12am/faceID-frontend` run `cd ..` and `npm install expo-cli <--global>`
+        - go to directory `final-project-12am/faceID-frontend` run `npm install expo-cli <--global>`
 
     2. Download Expo Client (in App Store on iphone device)
         - For iOS, open your camera, scan the code from expo bundle on your web browser, then open Expo.
         - For Android, scan the code with the barcode scanner within the Expo Client app.
+        
+    3. Now you can start testing by following the app prompt
 
 ### Backend
+  - Run Flask API with a temporary deployment link
+  
+    1. Open browser and type in `http://3dfa15c1160e.ngrok.io`
+   
+    2. Now you could skip the section "Run Flask API LOCALLY" and jump to "Training/Testing on Flask API"
+   
+    3. If this link expired, check out the following instuction on how to run Flask locally
 
-  - Run Flask api the two detection components to test on desktop
+  - Run Flask API locally
   
     1. Set up virtual environment LOCALLY (one dir above the whole project dir)
         - run `python -m venv venv`
@@ -90,7 +99,7 @@ To test the project, follow the instructions for fronend/backend repspectively t
         - run `pip install <LIB> --upgrade`
         - or run `pip install --upgrade pip`
         
-  - Now we can test different functionalities
+  - Training/Testing on Flask API
     
     1. Training: 
         - Create or Delete a Person Group: go to `[LOCAL_HOST]/create` or `[LOCAL_HOST]/delete`
@@ -99,7 +108,7 @@ To test the project, follow the instructions for fronend/backend repspectively t
         
     2. Testing: 
         - Go to `[LOCAL_HOST]`, type the owner name of the trained data and upload a video from desktop 
-        - Run the liveness and facial reocognition apis by naviagting to `[LOCAL_HOST]/detect`
+        - Run the liveness and facial reocognition APIs by naviagting to `[LOCAL_HOST]/detect`
         - Check the browser for the detection result
         - "True" means the video is lively and the faces detected belong to the authenticated user
     
