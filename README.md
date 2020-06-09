@@ -9,7 +9,7 @@ A simple login authentication interface for iOS/Android app which recognizes and
 * [Significance and Result](#significance-and-result)
 
 ## General Info 
-This is a project created by Team12AM, Huyen Pham, Linda Li, Tim Van and Liyin Li. It contains two main components. An frontend app which uses REACT Native and a Flask server as backend which encapsulates the two detection models. User can test the project through running the Expo app on iOS/Android phone or running the flask app on desktop.
+This is a project created by Team12AM, Huyen Pham, Linda Li, Tim Van and Liyin Li. It contains two main components. An frontend app which uses REACT Native and a Flask server as backend which encapsulates two detection models (Facial Recognition and Liveness Detection). User can test the project through running the Expo app on iOS/Android phone or running the flask app on desktop.
 
 ## Repo Structure
 ```
