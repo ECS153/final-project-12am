@@ -6,8 +6,7 @@ A simple login authentication interface for iOS/Android app which recognizes and
 * [Setup](#setup)
 * [Repo Structure](#repo-structure)
 * [Code Structure](#code-structure)
-* [Significance](#significance)
-* [Result](#result)
+* [Significance and Result](#significance-and-result)
 
 ## General Info 
 This is a project created by Team12AM, Huyen Pham, Linda Li, Tim Van and Liyin Li. It contains two main components. An frontend app which uses REACT Native and a Flask server as backend which encapsulates the two detection models. User can test the project through running the Expo app on iOS/Android phone or running the flask app on desktop.
@@ -15,31 +14,31 @@ This is a project created by Team12AM, Huyen Pham, Linda Li, Tim Van and Liyin L
 ## Repo Structure
 ```
 final-project-12am /
-|- README.md
-|- proposal.md
-|- milestones.md
-|- design_docs.md
-|- final-presentation-12am.mp4
-|- faceID-frontend
-  |- App.js
-  |- ... 
-|- backend	
- 	|- server
-    |- media
-        |- images
-        |- videos
-    |- data
-      |- Kenny
-        |- frame1.jpg
-        |- ...
-    |- liveness
-        |- liveness_detector.py
-        |- ...
-    |- detector.py
-    |- templates
-    |- app.py
-    |- utils.py
-    |- requirement.txt
+  |- README.md
+  |- proposal.md
+  |- milestones.md
+  |- design_docs.md
+  |- final-presentation-12am.mp4
+  |- faceID-frontend
+    |- App.js
+    |- ... 
+  |- backend	
+    |- server
+      |- media
+          |- images
+          |- videos
+      |- data
+        |- Kenny
+          |- frame1.jpg
+          |- ...
+      |- liveness
+          |- liveness_detector.py
+          |- ...
+      |- detector.py
+      |- templates
+      |- app.py
+      |- utils.py
+      |- requirement.txt
 ```
 
 ## Code Structure
@@ -91,7 +90,7 @@ To test the project, follow the instructions for fronend/backend repspectively t
     
     1. Training: 
         - Create or Delete a Person Group: go to `[LOCAL_HOST]/create` or `[LOCAL_HOST]/delete`
-        - Train a person data in folder `server/data`: go to `[LOCAL_HOST]/train`
+        - Train a person data in folder `./backend/server/data/[NAME]`: go to `[LOCAL_HOST]/train`
         
     2. Testing: 
         - Go to `[LOCAL_HOST]`, type the owner name of the trained data and upload a video from desktop 
@@ -99,9 +98,5 @@ To test the project, follow the instructions for fronend/backend repspectively t
         - Check the browser for the detection result
         - "True" means the video is lively and the faces detected belong to the authenticated user
     
-
-## Significance 
--> (Instruction from Sam's web: How significant was the system you built. We've been giving all groups feedback on this during our weekly meetings, so I'm not expecting any surprises here.)
-
-## Result 
--> (Instruction from Sam's web: Basic results will get you most of the points, but we're reserving a few points in this category for exceptional results. 
+## Significance and Result
+We were able detect the liveness of the upload video and recognized whether the deteced face(s) in the video belong to a user face that we pretrained upon. However, the detection accuracy was not as high as using the Flask API directly when we were tesing on iOS decide using the Expo app. We found that it was due to the high resolution of the upload video. Since our traning data was limited in our models, detection failures could occur sometimes.
