@@ -70,7 +70,7 @@ To test the project, follow the instructions for fronend/backend repspectively t
   
     1. Open browser and type in `http://3dfa15c1160e.ngrok.io`
    
-    2. Now you could skip the section "Run Flask API LOCALLY" and jump to "Training/Testing on Flask API"
+    2. Now you could skip the section "Run Flask API locally" and jump to "Training/Testing on Flask API"
    
     3. If this link expired, check out the following instuction on how to run Flask locally
 
