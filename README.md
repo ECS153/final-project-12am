@@ -8,6 +8,7 @@ A simple login authentication interface for iOS/Android app which recognizes and
 * [Code Structure](#code-structure)
 * [Setup and Testing](#setup-and0-testing)
 * [Significance and Result](#significance-and-result)
+* [Demo](#demo)
 
 ## General Info 
 This is a project created by Team12AM, Huyen Pham, Linda Li, Tim Van and Liyin Li. It contains two main components. An frontend app which uses REACT Native and a Flask server as backend which encapsulates two detection models (Facial Recognition and Liveness Detection). User can test the project through running the Expo app on iOS/Android phone or running the flask app on desktop.
@@ -113,3 +114,6 @@ To test the project, follow the instructions for fronend/backend repspectively t
     
 ## Significance and Result
 We were able detect the liveness of the upload video and recognized whether the deteced face(s) in the video belong to a user face that we pretrained upon. However, the detection accuracy was not as high as using the Flask API directly when we were tesing on iOS decide using the Expo app. We found that it was due to the high resolution of the upload video. Since our traning data was limited in our models, detection failures could occur sometimes.
+
+## Demo 
+[Click here to checkout app demo!](https://drive.google.com/file/d/14_4ObATmjiphzn_qrV8q0ivwdnvU09Z9/view?usp=sharing)
