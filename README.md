@@ -109,8 +109,7 @@ To test the project, follow the instructions for fronend/backend repspectively t
     2. Testing: 
         - Go to `[LOCAL_HOST]/upload`, type the owner name of the trained data and upload a video from desktop 
         - Run the liveness and facial reocognition APIs by naviagting to `[LOCAL_HOST]/detect`
-        - Check the browser for the detection result
-        - "True" means the video is lively and the faces detected belong to the authenticated user
+        - Check the browser for the detection result: "True" means the video is lively and the faces detected belong to the authenticated user, otherwise at least one of tests failed.
     
 ## Significance and Result
 We were able detect the liveness of the upload video and recognized whether the deteced face(s) in the video belong to a user face that we pretrained upon. However, the detection accuracy was not as high as using the Flask API directly when we were tesing on iOS decide using the Expo app. We found that it was due to the high resolution of the upload video. Since our traning data was limited in our models, detection failures could occur sometimes.
