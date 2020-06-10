@@ -113,7 +113,7 @@ To test the project, follow the instructions for fronend/backend repspectively t
         - Check the browser for the detection result: "True" means the video is lively and the faces detected belong to the authenticated user, otherwise at least one of tests failed.
     
 ## Significance and Result
-We were able detect the liveness of the upload video and recognized whether the deteced face(s) in the video belong to a user face that we pretrained upon. However, the detection accuracy was not as high as using the Flask API directly when we were tesing on iOS decide using the Expo app. We found that it was due to the high resolution of the upload video. Since our traning data was limited in our models, detection failures could occur sometimes.
+We were able detect the liveness of the upload video and recognized whether the deteced face(s) in the video belong to a user face that we pretrained upon. However, the detection accuracy was not as high as using the Flask API directly when we were tesing on iOS device using the Expo app. We found that it was due to the high resolution of the upload video. Since our traning data was limited in our models, detection failures could occur sometimes.
 
 ## Demo 
 [Click here to checkout app demo!](https://drive.google.com/file/d/14_4ObATmjiphzn_qrV8q0ivwdnvU09Z9/view?usp=sharing)
